@@ -9,7 +9,7 @@ TillTotal is an iOS app developed in Xcode that simplifies cash counting and tra
 - **Precise Cash Calculations**: TillTotal accurately calculates and tallies the daily earnings, ensuring precision in financial tracking.
 - **User-friendly Interface**: The intuitive interface makes it easy to navigate and input cash amounts quickly.
 - **Convenient Reports**: Generate reports summarizing daily cash earnings for easy reference and analysis.
-- **Data Privacy**: Your financial information is securely stored and only accessible to authorized users.
+- **Data Privacy**: Your financial information is stored locally so no one but you can access it.
 
 ## Installation
 
