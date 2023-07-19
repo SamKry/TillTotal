@@ -96,5 +96,65 @@ class CoinDataTests: XCTestCase {
         XCTAssertEqual((multipleCoinTypeData.coinTypes[2].currencies.first as? CoinData.Coin)?.value, 0.10)
     }
     
+    func testReset() {
+        // Set some values to the coins and other
+        let coin1 = fullCoinDataCHF.coinTypes[0].currencies[0] as! CoinData.Coin
+        coin1.count = 5
+        
+        let coin2 = fullCoinDataCHF.coinTypes[1].currencies[2] as! CoinData.Coin
+        coin2.count = 10
+        
+        let other1 = fullCoinDataCHF.coinTypes[3].currencies[0] as! CoinData.Other
+        other1.total = 50.0
+        
+        // Reset the coin types
+        fullCoinDataCHF.reset()
+        
+        // Check if the values are reset to 0
+        XCTAssertEqual(coin1.count, 0)
+        XCTAssertEqual(coin2.count, 0)
+        XCTAssertEqual(other1.getTotal(), 0.0)
+    }
+    
+    func testGetTotal() {
+        // Set some values to the coins and other
+        (fullCoinDataCHF.coinTypes[0].currencies[0] as! CoinData.Coin).count = 5
+        (fullCoinDataCHF.coinTypes[0].currencies[2] as! CoinData.Coin).count = 12
+        
+        (fullCoinDataCHF.coinTypes[1].currencies[0] as! CoinData.Coin).count = 2
+        (fullCoinDataCHF.coinTypes[1].currencies[1] as! CoinData.Coin).count = 3
+        (fullCoinDataCHF.coinTypes[1].currencies[2] as! CoinData.Coin).count = 10
+        
+        (fullCoinDataCHF.coinTypes[2].currencies[0] as! CoinData.Coin).count = 1
+        (fullCoinDataCHF.coinTypes[2].currencies[2] as! CoinData.Coin).count = 3
+        (fullCoinDataCHF.coinTypes[2].currencies[3] as! CoinData.Coin).count = 4
+        
+        (fullCoinDataCHF.coinTypes[3].currencies[0] as! CoinData.Other).total = 152.67
+        
+        
+        let totalCoinType1 = fullCoinDataCHF.coinTypes[0].getTotal()
+        let totalCoinType2 = fullCoinDataCHF.coinTypes[1].getTotal()
+        let totalCoinType3 = fullCoinDataCHF.coinTypes[2].getTotal()
+        let totalCoinType4 = fullCoinDataCHF.coinTypes[3].getTotal()
+        
+        let grandTotal = fullCoinDataCHF.getTotal()
+        
+        // Expected totals
+        let expectedTotalCoinType1:Double = 5.0 * 5.0 + 1.0 * 12
+        let expectedTotalCoinType2:Double = 500.0 * 2.0 + 200.0 * 3.0 + 100.0 * 10.0
+        let expectedTotalCoinType3:Double = 125.0 * 1.0 + 50.0 * 3.0 + 25.0 * 4.0
+        let expectedTotalCoinType4:Double = 152.67
+        
+        let expectedGrandTotal:Double = expectedTotalCoinType1 + expectedTotalCoinType2 + expectedTotalCoinType3 + expectedTotalCoinType4
+        
+        
+        // Check if the calculated totals match the expected values
+        XCTAssertEqual(totalCoinType1, expectedTotalCoinType1)
+        XCTAssertEqual(totalCoinType2, expectedTotalCoinType2)
+        XCTAssertEqual(totalCoinType3, expectedTotalCoinType3)
+        XCTAssertEqual(totalCoinType4, expectedTotalCoinType4)
+        
+        XCTAssertEqual(grandTotal, expectedGrandTotal)
+    }
     
 }
