@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="21G651" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CoinEntity" representedClassName="CoinEntity" syncable="YES" codeGenerationType="category">
+        <attribute name="isOther" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="number" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="value" attributeType="Double" defaultValueString="1" usesScalarValueType="YES"/>
+        <relationship name="coinType" maxCount="1" deletionRule="Nullify" destinationEntity="CoinTypeEntity" inverseName="coins" inverseEntity="CoinTypeEntity"/>
+    </entity>
+    <entity name="CoinTypeEntity" representedClassName="CoinTypeEntity" syncable="YES" codeGenerationType="category">
+        <attribute name="icon" attributeType="String" defaultValueString="exclamationmark.triangle"/>
+        <attribute name="id" attributeType="Integer 64" minValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String" defaultValueString="undefined"/>
+        <relationship name="coins" toMany="YES" deletionRule="Cascade" destinationEntity="CoinEntity" inverseName="coinType" inverseEntity="CoinEntity"/>
+        <relationship name="currnecy" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyEntity" inverseName="coinTypes" inverseEntity="CurrencyEntity"/>
+    </entity>
+    <entity name="CurrencyEntity" representedClassName="CurrencyEntity" syncable="YES" codeGenerationType="category">
+        <attribute name="icon" attributeType="String" defaultValueString=""/>
+        <attribute name="id" attributeType="Integer 64" minValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String" defaultValueString="undefined"/>
+        <relationship name="coinTypes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CoinTypeEntity" inverseName="currnecy" inverseEntity="CoinTypeEntity"/>
+        <relationship name="till" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TillEntity" inverseName="currency" inverseEntity="TillEntity"/>
+    </entity>
+    <entity name="TillEntity" representedClassName="TillEntity" syncable="YES" codeGenerationType="category">
+        <attribute name="cashStock" attributeType="Double" defaultValueString="2000" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" attributeType="String" defaultValueString="Main Till"/>
+        <attribute name="refrenceTotal" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="currency" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyEntity" inverseName="till" inverseEntity="CurrencyEntity"/>
+    </entity>
+</model>
