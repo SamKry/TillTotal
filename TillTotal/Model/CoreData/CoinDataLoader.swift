@@ -76,7 +76,29 @@ class CoinDataLoader{
                 .value = 16.0
         ]
         
-//        return newTill
+        //        return newTill
     }
     
+    static func initCoin(value:Double) -> CoinEntity {
+        let context = CoreDataManager.instance.context
+        let newCoin: CoinEntity = CoinEntity(context: context)
+        newCoin.value = value
+        //        newCoin.isOther = isOther
+        newCoin.number = 0
+        return newCoin
+    }
+    
+    static func initCoinType(id:Int64, icon:String, isOther:Bool, name:String, coins:[CoinEntity]) -> CoinTypeEntity {
+        let context = CoreDataManager.instance.context
+        
+        let newCoinType = CoinTypeEntity(context: context)
+        newCoinType.icon = icon
+        newCoinType.id = id
+        newCoinType.isOther = isOther
+        newCoinType.name = name
+        for coin in coins {
+            coin.coinType = newCoinType
+        }
+        return newCoinType
+    }
 }
