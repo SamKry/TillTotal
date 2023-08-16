@@ -7,14 +7,20 @@
 
 import SwiftUI
 
-struct TextFieldFactory: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+func TextFieldInt(value: Binding<Int64>, text:String) -> some View {
+    return TextField(text, value: value, formatter: CustomNumberFormatter.getIntFormatter())
+        .padding(7)
+        .frame(height: 35)
+        .background(Color("Neutral-Ultra"))
+        .cornerRadius(7)
+        .keyboardType(.numberPad)
 }
 
-struct TextFieldFactory_Previews: PreviewProvider {
-    static var previews: some View {
-        TextFieldFactory()
-    }
+func TextFieldDecimal(value: Binding<Double>, text:String) -> some View {
+    return TextField(text, value: value, formatter: CustomNumberFormatter.getDecimalFormatter())
+        .padding(7)
+        .frame(height: 35)
+        .background(Color("Neutral-Ultra"))
+        .cornerRadius(7)
+        .keyboardType(.decimalPad)
 }

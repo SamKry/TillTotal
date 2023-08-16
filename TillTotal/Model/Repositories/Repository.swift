@@ -13,20 +13,20 @@ protocol Repository {
     associatedtype Entity
     
     /// Gets an array of entities.
-    func getAll() async throws -> [Entity]
+    func getAll() throws -> [Entity]
     
     /// Gets an entity by id
     /// - Parameter id: The id of the entity
-    func getByID(id: UUID) async throws -> Entity?
+    func getByID(id: UUID) throws -> Entity?
     
     /// Creates an entity.
-    func create() async throws -> Entity
+    func create() throws -> Entity
     
     /// Deletes an entity
     /// - Parameter id: The id of the entity to be deleted
-    func delete(id: UUID) async throws -> ()
+    func delete(id: UUID) throws -> ()
     
     /// Deletes an entity.
     /// - Parameter entity: The entity to be deleted.
-    func delete(entity: Entity) async throws -> ()
+    func delete(entity: Entity) throws -> ()
 }

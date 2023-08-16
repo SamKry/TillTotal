@@ -17,12 +17,12 @@ class CurrencyEntityReopsitory:Repository {
         self.container = container
     }
     
-    func getAll() async throws -> [CurrencyEntity] {
+    func getAll() throws -> [CurrencyEntity] {
         let request = CurrencyEntity.fetchRequest()
         return try container.viewContext.fetch(request)
     }
     
-    func getByID(id: UUID) async throws -> CurrencyEntity? {
+    func getByID(id: UUID) throws -> CurrencyEntity? {
         let request = CurrencyEntity.fetchRequest()
         request.fetchLimit = 1
         request.predicate = NSPredicate(
@@ -32,14 +32,14 @@ class CurrencyEntityReopsitory:Repository {
         return CurrencyCoreDataEntity
     }
     
-    func create() async throws -> CurrencyEntity {
+    func create() throws -> CurrencyEntity {
         let newEntity = CurrencyEntity(context: container.viewContext)
         saveContext()
         return newEntity
     }
     
-    func delete(id: UUID) async throws {
-        let currencyCoreDataEntity = try await getByID(id: id)!
+    func delete(id: UUID) throws {
+        let currencyCoreDataEntity = try getByID(id: id)!
         let context = container.viewContext;
         context.delete(currencyCoreDataEntity)
         do{
@@ -50,7 +50,7 @@ class CurrencyEntityReopsitory:Repository {
         }
     }
     
-    func delete(entity: CurrencyEntity) async throws {
+    func delete(entity: CurrencyEntity) throws {
         let context = container.viewContext;
         context.delete(entity)
         do{

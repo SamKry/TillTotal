@@ -5,4 +5,10 @@
 //  Created by Samuel Kreyenbühl on 11.08.23.
 //
 
-import Foundation
+import SwiftUI
+
+class KeyboardHandler {
+    public static func hideKeyboard(){
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}

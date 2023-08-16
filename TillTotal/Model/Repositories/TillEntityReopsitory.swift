@@ -21,7 +21,7 @@ class TillEntityReopsitory: Repository {
         return try container.viewContext.fetch(request)
     }
     
-    func getByID(id: UUID) async throws -> TillEntity? {
+    func getByID(id: UUID) throws -> TillEntity? {
         let request = TillEntity.fetchRequest()
         request.fetchLimit = 1
         request.predicate = NSPredicate(
@@ -31,14 +31,14 @@ class TillEntityReopsitory: Repository {
         return tillCoreDataEntity
     }
     
-    func create() async throws -> TillEntity {
+    func create() throws -> TillEntity {
         let newEntity = TillEntity(context: container.viewContext)
         TillEntityReopsitory.saveContext()
         return newEntity
     }
     
-    func delete(id: UUID) async throws -> (){
-        let tillCoreDataEntity = try await getByID(id: id)!
+    func delete(id: UUID) throws -> (){
+        let tillCoreDataEntity = try getByID(id: id)!
         let context = container.viewContext;
         context.delete(tillCoreDataEntity)
         do{
@@ -49,7 +49,7 @@ class TillEntityReopsitory: Repository {
         }
     }
     
-    func delete(entity: TillEntity) async throws {
+    func delete(entity: TillEntity) throws {
         let context = container.viewContext;
         context.delete(entity)
         do{

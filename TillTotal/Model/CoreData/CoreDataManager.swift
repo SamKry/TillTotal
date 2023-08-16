@@ -23,18 +23,9 @@ class CoreDataManager{
                 fatalError("Error creating preview store: \(error)")
             }
         }
-        
-//        CoinDataLoader.initTill(context: container.viewContext)
-//        
-//        do{
-//            try container.viewContext.save()
-//            print("Saved sucessfully - PREVIEW")
-//        } catch let error{
-//            print("ERROR SAVING - PREVIEW \(error)")
-//        }
-        
         return container
     }
+
     
     init(){
         container = NSPersistentContainer(name: "Model")
@@ -47,11 +38,20 @@ class CoreDataManager{
     }
     
     func saveData(){
-        do{
-            try container.viewContext.save()
-            print("Saved sucessfully")
-        } catch let error{
-            print("ERROR SAVING. \(error)")
+        saveData(forceSave: false)
+    }
+    
+    func saveData(forceSave:Bool){
+        if (forceSave || container.viewContext.hasChanges) {
+            do{
+                try container.viewContext.save()
+                print("Saved sucessfully")
+            } catch let error{
+                print("ERROR SAVING. \(error)")
+            }
+        }
+        else{
+            print("Nothing to save")
         }
     }
 }

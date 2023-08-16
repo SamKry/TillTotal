@@ -12,7 +12,7 @@ struct TillTotalApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(container: CoreDataManager.instance.container)
+            ContentView()
         }
     }
 }

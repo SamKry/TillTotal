@@ -16,12 +16,14 @@ class CoinTypeEntityReopsitory:Repository {
         self.container = container
     }
     
-    func getAll() async throws -> [CoinTypeEntity] {
+    func getAll() throws -> [CoinTypeEntity] {
         let request = CoinTypeEntity.fetchRequest()
-        return try container.viewContext.fetch(request)
+        let vals = try container.viewContext.fetch(request)
+        print("Found \(vals.count) CoinType Entities")
+        return vals
     }
     
-    func getByID(id: UUID) async throws -> CoinTypeEntity? {
+    func getByID(id: UUID) throws -> CoinTypeEntity? {
         let request = CoinTypeEntity.fetchRequest()
         request.fetchLimit = 1
         request.predicate = NSPredicate(
@@ -31,14 +33,14 @@ class CoinTypeEntityReopsitory:Repository {
         return coinTypeCoreDataEntity
     }
     
-    func create() async throws -> CoinTypeEntity {
+    func create() throws -> CoinTypeEntity {
         let newEntity = CoinTypeEntity(context: container.viewContext)
         saveContext()
         return newEntity
     }
     
-    func delete(id: UUID) async throws -> (){
-        let coinTypeCoreDataEntity = try await getByID(id: id)!
+    func delete(id: UUID) throws -> (){
+        let coinTypeCoreDataEntity = try getByID(id: id)!
         let context = container.viewContext;
         context.delete(coinTypeCoreDataEntity)
         do{
@@ -49,7 +51,7 @@ class CoinTypeEntityReopsitory:Repository {
         }
     }
     
-    func delete(entity: CoinTypeEntity) async throws {
+    func delete(entity: CoinTypeEntity) throws {
         let context = container.viewContext;
         context.delete(entity)
         do{
