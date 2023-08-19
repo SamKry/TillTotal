@@ -9,87 +9,86 @@ import SwiftUI
 import CoreData
 
 class CoinDataLoader{
-    static func initTill(context: NSManagedObjectContext) {
+    
+    private static let context = CoreDataManager.instance.context
+    
+    static func loadTillOrCreate() -> TillEntity {
+        let tillRepo = TillEntityReopsitory(container: CoreDataManager.instance.container)
+        do{
+            let firstTill = try tillRepo.getAll().first
+            if(firstTill != nil) {
+                print("Found Till Entity: \(firstTill?.name ?? "(no name defined)")")
+                return firstTill!
+            }
+        } catch {
+            print("error loading Tills from CoinDataLoader")
+        }
+        print("init a new Till")
+        return CoinDataLoader.initTill()
+    }
+    
+    static func initTill() -> TillEntity {
         let newTill = TillEntity(context: context)
+        newTill.name = "default Till"
+        newTill.cashStock = 2000
+        newTill.refrenceTotal = 0
         newTill.id = UUID()
-        newTill.name = "Test Till"
-        newTill.cashStock = 123.456
-        newTill.refrenceTotal = 2023.8
+        newTill.currency = CoinDataLoader.initCHF(till: newTill)
+        
+        return newTill
+    }
+    
+    private static func initCHF(till:TillEntity) -> CurrencyEntity {
+        
         let newCurrency = CurrencyEntity(context: context)
-        newTill.currency = newCurrency
-        newCurrency.name = "new TestCurrency"
-        newCurrency.id = 1
+        newCurrency.icon = "francsign.circle"
+        newCurrency.name = "CHF"
+        newCurrency.till = till
         
-        let newCoinType1 = CoinTypeEntity(context: context)
-        let newCoinType2 = CoinTypeEntity(context: context)
-        let newCoinType3 = CoinTypeEntity(context: context)
         
-        newCurrency.coinTypes = [newCoinType1, newCoinType2, newCoinType3]
-        newCoinType1.id = 1
-        newCoinType2.id = 2
-        newCoinType3.id = 3
-        newCoinType1.name = "Test CoinType1"
-        newCoinType2.name = "Test CoinType2"
-        newCoinType3.name = "Test CoinType3"
-        newCoinType1.coins = [
-            CoinEntity(context: context)
-                .value = 1.0,
-            CoinEntity(context: context)
-                .value = 2.0,
-            CoinEntity(context: context)
-                .value = 3.0,
-            CoinEntity(context: context)
-                .value = 4.0,
-            CoinEntity(context: context)
-                .value = 5.0,
-            CoinEntity(context: context)
-                .value = 6.0
-        ]
+        let cashs = CoinDataLoader.initCoinType(id: 1, icon: "dollarsign.circle", isOther: false, name: "Münzen",
+                                                coins: [
+                                                    CoinDataLoader.initCoin(value: 5),
+                                                    CoinDataLoader.initCoin(value: 2),
+                                                    CoinDataLoader.initCoin(value: 1),
+                                                    CoinDataLoader.initCoin(value: 0.50),
+                                                    CoinDataLoader.initCoin(value: 0.20),
+                                                    CoinDataLoader.initCoin(value: 0.10),
+                                                    CoinDataLoader.initCoin(value: 0.05),
+                                                ])
+        let notes = CoinDataLoader.initCoinType(id: 2, icon: "banknote", isOther: false, name: "Noten",
+                                                coins: [
+                                                    CoinDataLoader.initCoin(value: 500),
+                                                    CoinDataLoader.initCoin(value: 200),
+                                                    CoinDataLoader.initCoin(value: 100),
+                                                    CoinDataLoader.initCoin(value: 50),
+                                                    CoinDataLoader.initCoin(value: 20),
+                                                    CoinDataLoader.initCoin(value: 10),
+                                                ])
+        let rolls = CoinDataLoader.initCoinType(id: 3, icon: "cylinder.split.1x2", isOther: false, name: "Münzrollen",
+                                                coins: [
+                                                    CoinDataLoader.initCoin(value: 125),
+                                                    CoinDataLoader.initCoin(value: 100),
+                                                    CoinDataLoader.initCoin(value: 50),
+                                                    CoinDataLoader.initCoin(value: 25),
+                                                    CoinDataLoader.initCoin(value: 20),
+                                                    CoinDataLoader.initCoin(value: 10),
+                                                    CoinDataLoader.initCoin(value: 5),
+                                                    CoinDataLoader.initCoin(value: 2.50),
+                                                ])
+        let other = CoinDataLoader.initCoinType(id: 4, icon: "plus.circle", isOther: true, name: "Andere",
+                                                coins: [
+                                                    CoinDataLoader.initCoin(value: 0),
+                                                    CoinDataLoader.initCoin(value: 0),
+                                                    CoinDataLoader.initCoin(value: 0)
+                                                ])
         
-        newCoinType2.coins = [
-            CoinEntity(context: context)
-                .value = 10.0,
-            CoinEntity(context: context)
-                .value = 20.0,
-            CoinEntity(context: context)
-                .value = 30.0,
-            CoinEntity(context: context)
-                .value = 40.0,
-            CoinEntity(context: context)
-                .value = 50.0,
-            CoinEntity(context: context)
-                .value = 60.0
-        ]
+        newCurrency.coinTypes = [cashs, notes, rolls, other]
         
-        newCoinType3.coins = [
-            CoinEntity(context: context)
-                .value = 11.0,
-            CoinEntity(context: context)
-                .value = 12.0,
-            CoinEntity(context: context)
-                .value = 13.0,
-            CoinEntity(context: context)
-                .value = 14.0,
-            CoinEntity(context: context)
-                .value = 15.0,
-            CoinEntity(context: context)
-                .value = 16.0
-        ]
-        
-        //        return newTill
+        return newCurrency
     }
     
-    static func initCoin(value:Double) -> CoinEntity {
-        let context = CoreDataManager.instance.context
-        let newCoin: CoinEntity = CoinEntity(context: context)
-        newCoin.value = value
-        //        newCoin.isOther = isOther
-        newCoin.number = 0
-        return newCoin
-    }
-    
-    static func initCoinType(id:Int64, icon:String, isOther:Bool, name:String, coins:[CoinEntity]) -> CoinTypeEntity {
-        let context = CoreDataManager.instance.context
+    private static func initCoinType(id:Int64, icon:String, isOther:Bool, name:String, coins:[CoinEntity]) -> CoinTypeEntity {
         
         let newCoinType = CoinTypeEntity(context: context)
         newCoinType.icon = icon
@@ -100,5 +99,12 @@ class CoinDataLoader{
             coin.coinType = newCoinType
         }
         return newCoinType
+    }
+    
+    static func initCoin(value:Double) -> CoinEntity {
+        let newCoin: CoinEntity = CoinEntity(context: context)
+        newCoin.value = value
+        newCoin.number = 0
+        return newCoin
     }
 }

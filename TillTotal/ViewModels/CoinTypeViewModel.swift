@@ -11,14 +11,6 @@ import SwiftUI
 class CoinTypeViewModel:ObservableObject {
     private var coinTypeEntity:CoinTypeEntity
     
-    let container: NSPersistentContainer
-    let context: NSManagedObjectContext
-    let repository:CoinEntityReopsitory
-    
-    @Published var total:Double // TODO: does not update automatically
-    
-    
-    
     @Published var coins:[CoinEntity] = []
     let icon:Image
     let isOther:Bool
@@ -26,20 +18,34 @@ class CoinTypeViewModel:ObservableObject {
     
     init(coinTypeEntity:CoinTypeEntity) {
         self.coinTypeEntity = coinTypeEntity
-        self.container = CoreDataManager.instance.container
-        self.context = CoreDataManager.instance.context
-        self.repository = CoinEntityReopsitory(container: container)
         
         self.coins = coinTypeEntity.coins?.sortedArray(using: [NSSortDescriptor(key: "value", ascending: false)]) as! [CoinEntity]
         self.icon = Image(systemName: coinTypeEntity.icon ?? "exclamationmark.questionmark")
         self.isOther = coinTypeEntity.isOther
         self.name = coinTypeEntity.name ?? "NoName"
-        self.total = 0.0
-        updateTotal()
     }
 
-    func updateTotal() {
-        self.total = coinTypeEntity.getTotal()
+    func addOther() {
+        print("Before: \(coins.count)")
+        let newCoin = CoinDataLoader.initCoin(value: 0)
+        newCoin.coinType = coinTypeEntity
+        coins.append(newCoin)
+        print("After: \(coins.count)")
+        save()
     }
     
+    func save() {
+        CoreDataManager.instance.saveData()
+    }
+    
+    func reset() {
+        for coin in coins {
+            if (isOther) {
+                coin.value = 0.0
+                coin.number = 1
+            } else {
+                coin.number = 0
+            }
+        }
+    }
 }

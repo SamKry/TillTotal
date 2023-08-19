@@ -25,7 +25,7 @@ class CoreDataManager{
         }
         return container
     }
-
+    
     
     init(){
         container = NSPersistentContainer(name: "Model")
@@ -36,13 +36,20 @@ class CoreDataManager{
         }
         context = container.viewContext
     }
+        
+    private var debounceTimer: Timer?
     
-    func saveData(){
-        saveData(forceSave: false)
+    func saveData() {
+        debounceTimer?.invalidate() // Invalidate the existing timer
+        
+        // Create a new timer that delays the saveData() call
+        debounceTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
+            self?.debouncedSaveData()
+        }
     }
     
-    func saveData(forceSave:Bool){
-        if (forceSave || container.viewContext.hasChanges) {
+    private func debouncedSaveData() {
+        if (container.viewContext.hasChanges) {
             do{
                 try container.viewContext.save()
                 print("Saved sucessfully")

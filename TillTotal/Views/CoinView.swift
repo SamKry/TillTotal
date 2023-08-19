@@ -35,7 +35,7 @@ struct CoinView: View {
             HStack(spacing: 0) {
                 viewModel.icon
                 Spacer()
-                TextFieldDecimal(value: $viewModel.value, text: "Amount")
+                TextFieldDecimal(value: $viewModel.value, text: "Betrag")
                     .padding(.leading, 7)
             }
             .foregroundColor(Color("Main"))
@@ -63,7 +63,7 @@ struct CoinView: View {
                 
                 Text("x")
                 
-                TextFieldInt(value: $viewModel.number, text: "Number")
+                TextFieldInt(value: $viewModel.number, text: "Anzahl")
                     .frame(width: 100)
                     .padding(.leading, 7)
                 

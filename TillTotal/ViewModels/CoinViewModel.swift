@@ -12,13 +12,11 @@ class CoinViewModel:ObservableObject {
     
     @Published var number:Int64 {
         didSet {
-//            self.numberChanged += 1
             save()
         }
     }
     @Published var value:Double {
         didSet {
-//            self.numberChanged += 1
             save()
         }
     }
@@ -45,6 +43,7 @@ class CoinViewModel:ObservableObject {
     private var debounceTimer: Timer?
     
     func save() {
+        coinEntity.value = value
         coinEntity.number = number
         debounceTimer?.invalidate() // Invalidate the existing timer
         
@@ -56,6 +55,5 @@ class CoinViewModel:ObservableObject {
     
     private func debouncedSaveData() {
         CoreDataManager.instance.saveData()
-        superVM.updateTotal()
     }
 }

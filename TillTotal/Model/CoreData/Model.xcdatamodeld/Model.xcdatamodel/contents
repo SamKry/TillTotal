@@ -15,7 +15,6 @@
     </entity>
     <entity name="CurrencyEntity" representedClassName="CurrencyEntity" syncable="YES" codeGenerationType="category">
         <attribute name="icon" attributeType="String" defaultValueString=""/>
-        <attribute name="id" attributeType="Integer 64" minValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String" defaultValueString="undefined"/>
         <relationship name="coinTypes" toMany="YES" deletionRule="Cascade" destinationEntity="CoinTypeEntity" inverseName="currnecy" inverseEntity="CoinTypeEntity"/>
         <relationship name="till" maxCount="1" deletionRule="Nullify" destinationEntity="TillEntity" inverseName="currency" inverseEntity="TillEntity"/>
@@ -23,7 +22,7 @@
     <entity name="TillEntity" representedClassName="TillEntity" syncable="YES" codeGenerationType="category">
         <attribute name="cashStock" attributeType="Double" defaultValueString="2000" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="name" attributeType="String" defaultValueString="Main Till"/>
+        <attribute name="name" attributeType="String" defaultValueString="Main Till" spotlightIndexingEnabled="YES"/>
         <attribute name="refrenceTotal" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="currency" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyEntity" inverseName="till" inverseEntity="CurrencyEntity"/>
     </entity>

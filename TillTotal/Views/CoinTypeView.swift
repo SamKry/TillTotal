@@ -8,11 +8,7 @@
 import SwiftUI
 
 struct CoinTypeView: View {
-    let vm:CoinTypeViewModel
-    
-    
-    
-    @State var totalNeedsUpdate:Int = 0
+    @ObservedObject var vm:CoinTypeViewModel
     
     var body: some View {
         VStack(spacing: 0) {
@@ -23,12 +19,9 @@ struct CoinTypeView: View {
                     .foregroundColor(Color("Main"))
                 Spacer()
                 
-                Text("Subtotal: \(vm.total, specifier: "%.2f")")
+                Text("Zwischentotal: na")
             }
             .padding(.horizontal)
-            .onChange(of: vm.total) { newValue in
-                print(newValue)
-            }
             
             ScrollView(showsIndicators: false){
                 Spacer(minLength: 20)
@@ -41,9 +34,22 @@ struct CoinTypeView: View {
                 }
                 Spacer()
             }
-            .onChange(of: totalNeedsUpdate) { newValue in
-                vm.updateTotal()
+            
+            if (vm.isOther) {
+                Button {
+                    withAnimation {
+                        vm.addOther()
+                    }
+                } label: {
+                    Image(systemName: "plus.circle")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundColor(.green)
+                        .frame(width: 40, height: 40)
+                        .padding(.bottom, 10)
+                }
             }
+            
         }
         .padding(.horizontal)
         .padding(.top)
@@ -51,7 +57,5 @@ struct CoinTypeView: View {
             Color("Neutral-Ultra")
         )
         .cornerRadius(30)
-//        .shadow(color: Color("Neutral-Ultra.reversed"), radius: 10, x: -5, y: 5)
-        
     }
 }

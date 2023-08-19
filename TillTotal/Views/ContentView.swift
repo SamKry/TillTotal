@@ -9,59 +9,33 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
+    @ObservedObject var vm:ContentViewModel
     
-    @State var coinTypes: [CoinTypeEntity] = []
-    
-    init() {
-        do {
-            let all = try CoinTypeEntityReopsitory(container: CoreDataManager.instance.container).getAll()
-            self._coinTypes = State(wrappedValue: all)
-            printValues()
-        } catch {
-            print("Error loading CoinTypes: \(error)")
-        }
+    init(vm:ContentViewModel) {
+        self.vm = vm
+        UITabBar.appearance().unselectedItemTintColor = UIColor(Color("Neutral-Medium"))
     }
     
-    
-    func printValues(){
-        print("Number of fetched entities: \(coinTypes.count)")
-        for coinType in coinTypes {
-            print("Entity name: \(coinType.name ?? "No name was set")")
-        }
-    }
     var body: some View {
-        if coinTypes.first != nil {
-            CoinTypeView(vm: CoinTypeViewModel(coinTypeEntity: coinTypes.last!))
-        } else {
-            Text("No CoinType defined yet.")
-        }
         
-        Spacer()
-        
-        Button {
-            coinTypes.append(CoinDataLoader.initCoinType(id: Int64(coinTypes.count), icon: "dollarsign.circle", isOther: false, name: "Münzen",
-                                                         coins: [
-                                                            CoinDataLoader.initCoin(value: 1.3),
-                                                            CoinDataLoader.initCoin(value: 2),
-                                                            CoinDataLoader.initCoin(value: 3),
-                                                            CoinDataLoader.initCoin(value: 4),
-                                                            CoinDataLoader.initCoin(value: 5.4),
-                                                            CoinDataLoader.initCoin(value: 6),
-                                                            CoinDataLoader.initCoin(value: 7.6),
-                                                            CoinDataLoader.initCoin(value: 809090)
-                                                         ]))
-        } label: {
-            Image(systemName: "plus.circle")
-                .font(.largeTitle)
+        // Loop over coinTypes
+        TabView {
+            ForEach(vm.coinTypes) { coinType in
+                CoinTypeView(vm: CoinTypeViewModel(coinTypeEntity: coinType))
+                    .onTapGesture {
+                        KeyboardHandler.hideKeyboard()
+                    }.tabItem {
+                        Image(systemName: coinType.icon ?? "exclamationmark.questionmark")
+                        Text(coinType.name ?? "noName")
+                    }
+            }
+            
+            TillView(vm: TillViewModel(tillEntity: vm.till))
+                .tabItem {
+                    Image(systemName: "chart.line.uptrend.xyaxis")
+                    Text("Abrechnung")
+                }
         }
-    }
-    func save() {
-        CoreDataManager.instance.saveData()
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+        .accentColor(Color("Main"))
     }
 }
