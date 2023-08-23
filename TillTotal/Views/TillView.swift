@@ -55,9 +55,9 @@ struct TillView: View {
                         Divider()
                             .overlay(Color("Neutral-Ultra.reversed"))
                         GridRow {
-                            Text("Gesammt")
+                            Text("Gesamt")
                             Text("\(String(format: "%.2f", vm.getTotal()))")
-                            TextFieldDecimal(value: $vm.refrenceTotal, text: "Total ist")
+                            TextFieldDecimal(value: $vm.refrenceTotal, text: "Total soll")
                                 .keyboardType(.decimalPad)
                                 .foregroundColor(Color("Main"))
                                 .padding(5)
