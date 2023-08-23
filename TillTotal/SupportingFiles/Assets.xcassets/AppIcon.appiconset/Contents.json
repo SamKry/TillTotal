@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "TillTotalAppIcon_Rect.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"

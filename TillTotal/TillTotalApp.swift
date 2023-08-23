@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct TillTotalApp: App {
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            let till = CoinDataLoader.loadTillOrCreate()
+            ContentView(vm: ContentViewModel(till: till, currency: till.currency!))
         }
     }
 }
