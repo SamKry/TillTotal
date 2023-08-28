@@ -10,22 +10,7 @@ import CoreData
 class CoreDataManager{
     static let instance = CoreDataManager()
     let container: NSPersistentContainer
-    let context: NSManagedObjectContext
-    
-    static var preview: NSPersistentContainer {
-        let container = NSPersistentContainer(name: "Model - PREVIEW")
-        let description = NSPersistentStoreDescription()
-        description.url = URL(fileURLWithPath: "/dev/null")
-        container.persistentStoreDescriptions = [description]
-        
-        container.loadPersistentStores { (description, error) in
-            if let error = error {
-                fatalError("Error creating preview store: \(error)")
-            }
-        }
-        return container
-    }
-    
+    let context: NSManagedObjectContext    
     
     init(){
         container = NSPersistentContainer(name: "Model")
@@ -39,16 +24,20 @@ class CoreDataManager{
         
     private var debounceTimer: Timer?
     
-    func saveData() {
+    func saveData(forceSave:Bool = false) {
+        if(forceSave) {
+            saveDataNow()
+            return
+        }
         debounceTimer?.invalidate() // Invalidate the existing timer
         
         // Create a new timer that delays the saveData() call
         debounceTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
-            self?.debouncedSaveData()
+            self?.saveDataNow()
         }
     }
     
-    private func debouncedSaveData() {
+    public func saveDataNow() {
         if (container.viewContext.hasChanges) {
             do{
                 try container.viewContext.save()

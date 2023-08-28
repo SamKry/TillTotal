@@ -12,7 +12,7 @@ struct CoinTypeView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack{                
+            HStack{
                 Text(vm.name)
                 
                     .font(.largeTitle)
@@ -26,11 +26,8 @@ struct CoinTypeView: View {
             ScrollView(showsIndicators: false){
                 Spacer(minLength: 20)
                 ForEach(vm.coins) { coin in
-                    let cVM = CoinViewModel(coinEntity: coin, superVM: vm)
+                    let cVM = CoinViewModel(coinEntity: coin, isOther: vm.isOther)
                     CoinView(viewModel: cVM)
-                        .onChange(of: cVM.number) { neNumber in
-                            print(neNumber)
-                        }
                 }
                 Spacer()
             }
@@ -49,7 +46,9 @@ struct CoinTypeView: View {
                         .padding(.bottom, 10)
                 }
             }
-            
+        }
+        .onAppear{
+            vm.reloadModel()
         }
         .padding(.horizontal)
         .padding(.top)

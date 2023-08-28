@@ -9,6 +9,7 @@ import SwiftUI
 
 class CoinViewModel:ObservableObject {
     private var coinEntity:CoinEntity
+    let repository = CoinEntityReopsitory(container: CoreDataManager.instance.container)
     
     @Published var number:Int64 {
         didSet {
@@ -21,13 +22,18 @@ class CoinViewModel:ObservableObject {
         }
     }
     
+    @Published var total:Double = 0 {
+        didSet {
+            save()
+        }
+    }
+    
     let icon:Image
     var isOther:Bool
-    let superVM:CoinTypeViewModel
     
-    init(coinEntity: CoinEntity, superVM:CoinTypeViewModel) {
+    init(coinEntity: CoinEntity, isOther:Bool) {
         self.coinEntity = coinEntity
-        self.isOther = coinEntity.coinType?.isOther ?? false
+        self.isOther = isOther
         if(isOther){
             self.number = 1
             coinEntity.number = 1
@@ -36,24 +42,51 @@ class CoinViewModel:ObservableObject {
         }
         self.value = coinEntity.value
         self.icon = Image(systemName: coinEntity.coinType?.icon ?? "exclamationmark.triangle")
-        self.superVM = superVM
         save()
     }
     
-    private var debounceTimer: Timer?
+    func calcTotal(){
+        number = Int64(Double(number)+0.5)
+        total = value*Double(number)
+    }
+    
+    func calcNumber(){
+        let numbDouble = (total/value)+0.5
+        if( numbDouble.isNaN || numbDouble.isInfinite) {
+            print("Error in CoinView with numDouble Nan or infinite. Setting number to 0 ")
+            number = 0
+        } else {
+            number = Int64((total/value)+0.5)
+        }
+        calcTotal()
+    }
     
     func save() {
         coinEntity.value = value
         coinEntity.number = number
-        debounceTimer?.invalidate() // Invalidate the existing timer
         
-        // Create a new timer that delays the saveData() call
-        debounceTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
-            self?.debouncedSaveData()
+        CoreDataManager.instance.saveData()
+    }
+    
+    func delete() {
+        if(isOther){
+            do {
+                try repository.delete(entity: coinEntity)
+            } catch {
+                print("Error while deleting coinEntitiy")
+            }
         }
     }
     
-    private func debouncedSaveData() {
-        CoreDataManager.instance.saveData()
+    func reloadModel() {
+        if(isOther){
+            coinEntity.number = 1
+            self.number = coinEntity.number
+            self.value = coinEntity.value
+        } else {
+            self.number = coinEntity.number
+        }
+        calcTotal()
     }
+    
 }

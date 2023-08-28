@@ -13,20 +13,8 @@ struct CoinView: View {
     
     @ObservedObject var viewModel:CoinViewModel
     
-    @State var total:Double = 0.0
-    
     init(viewModel:CoinViewModel) {
         self.viewModel = viewModel
-    }
-    
-    func calcTotal(_ newNumber:Int64){
-        viewModel.number = Int64(Double(newNumber)+0.5)
-        self.total = viewModel.value*Double(viewModel.number)
-    }
-    
-    func calcNumber(_ newTotal:Double){
-        viewModel.number = Int64((newTotal/viewModel.value)+0.5)
-        calcTotal(viewModel.number)
     }
     
     var other: some View {
@@ -69,7 +57,7 @@ struct CoinView: View {
                 
                 Text("=")
                     .padding(.horizontal, 7)
-                TextFieldDecimal(value: $total, text: "Total")
+                TextFieldDecimal(value: $viewModel.total, text: "Total")
                     .frame(width: 100)
                     .foregroundColor(Color("Idle"))
             }
@@ -141,13 +129,14 @@ struct CoinView: View {
         
         return view
             .onAppear{
-                calcTotal(viewModel.number)
+                viewModel.reloadModel()
+                viewModel.calcTotal()
             }
-            .onChange(of: viewModel.number) { newNumber in
-                calcTotal(newNumber)
+            .onChange(of: viewModel.number) { _ in
+                viewModel.calcTotal()
             }
-            .onChange(of: total) { newTotal in
-                calcNumber(newTotal)
+            .onChange(of: viewModel.total) { _ in
+                viewModel.calcNumber()
             }
     }
 }

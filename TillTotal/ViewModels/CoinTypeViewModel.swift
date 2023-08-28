@@ -8,8 +8,10 @@
 import CoreData
 import SwiftUI
 
-class CoinTypeViewModel:ObservableObject {
+class CoinTypeViewModel:ObservableObject, Identifiable {
     private var coinTypeEntity:CoinTypeEntity
+    
+    private let repository = CoinEntityReopsitory(container: CoreDataManager.instance.container)
     
     @Published var coins:[CoinEntity] = []
     let icon:Image
@@ -23,29 +25,39 @@ class CoinTypeViewModel:ObservableObject {
         self.icon = Image(systemName: coinTypeEntity.icon ?? "exclamationmark.questionmark")
         self.isOther = coinTypeEntity.isOther
         self.name = coinTypeEntity.name ?? "NoName"
+        if(isOther){
+            coinTypeEntity.didReset = {
+                self.reloadModel()
+//                do{
+//                    for i in 3...self.coins.count-1{
+//                        try self.repository.delete(entity: self.coins[i])
+//                    }
+//                } catch {
+//                    print("Error while deleting coins")
+//                }
+//                self.coins.removeAll()
+//                self.addOther()
+//                self.addOther()
+//                self.addOther()
+            }
+        }
     }
-
+    
     func addOther() {
-        print("Before: \(coins.count)")
         let newCoin = CoinDataLoader.initCoin(value: 0)
         newCoin.coinType = coinTypeEntity
         coins.append(newCoin)
-        print("After: \(coins.count)")
         save()
+    }
+    
+    func reloadModel() {
+        CoreDataManager.instance.saveDataNow()
+        let sortedCoins = coinTypeEntity.coins?.sortedArray(using: [NSSortDescriptor(key: "value", ascending: false)])
+        coins.removeAll()
+        self.coins = sortedCoins as! [CoinEntity]
     }
     
     func save() {
         CoreDataManager.instance.saveData()
-    }
-    
-    func reset() {
-        for coin in coins {
-            if (isOther) {
-                coin.value = 0.0
-                coin.number = 1
-            } else {
-                coin.number = 0
-            }
-        }
     }
 }

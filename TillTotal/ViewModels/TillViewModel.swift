@@ -79,10 +79,6 @@ class TillViewModel:ObservableObject {
     func reset() {
         cashStock = 2000
         refrenceTotal = 0.0
-//        for coinType in currencyEntity.coinTypes?.allObjects as! [CoinTypeEntity] {
-//            coinType.reset()
-//        }
         CoreDataManager.instance.saveData()
     }
-    
 }

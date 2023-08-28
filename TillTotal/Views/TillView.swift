@@ -10,6 +10,7 @@ import SwiftUI
 struct TillView: View {
     
     @ObservedObject var vm: TillViewModel
+    @ObservedObject var contentVM: ContentViewModel
     
     var body: some View {
         VStack{
@@ -89,7 +90,7 @@ struct TillView: View {
             )
             .cornerRadius(30)
             
-            SettinsView(vm: vm)
+            SettinsView(vm: vm, contentVM: contentVM)
             
             Spacer()
         }
