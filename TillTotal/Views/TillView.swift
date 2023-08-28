@@ -47,7 +47,7 @@ struct TillView: View {
                         }
                         GridRow {
                             Text("Bar")
-                            Text("\(String(format: "%.2f", vm.notOthersIs))")
+                            Text("\(String(format: "%.2f", vm.cashIs))")
                                 .textSelection(.enabled)
                             Color.clear
                                 .gridCellUnsizedAxes([.horizontal, .vertical])
