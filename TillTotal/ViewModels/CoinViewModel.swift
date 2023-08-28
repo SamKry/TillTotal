@@ -9,7 +9,11 @@ import SwiftUI
 
 class CoinViewModel:ObservableObject {
     private var coinEntity:CoinEntity
-    let repository = CoinEntityReopsitory(container: CoreDataManager.instance.container)
+    var repository = CoinEntityReopsitory(container: CoreDataManager.instance.container)
+    
+    @Published var didAdd:Callback?
+    @Published var didSubstract:Callback?
+    @Published var didDelete:Callback?
     
     @Published var number:Int64 {
         didSet {
@@ -31,9 +35,10 @@ class CoinViewModel:ObservableObject {
     let icon:Image
     var isOther:Bool
     
-    init(coinEntity: CoinEntity, isOther:Bool) {
+    init(coinEntity: CoinEntity, isOther:Bool, didDelete:Callback?){
         self.coinEntity = coinEntity
         self.isOther = isOther
+        self.didDelete = didDelete
         if(isOther){
             self.number = 1
             coinEntity.number = 1
@@ -42,6 +47,13 @@ class CoinViewModel:ObservableObject {
         }
         self.value = coinEntity.value
         self.icon = Image(systemName: coinEntity.coinType?.icon ?? "exclamationmark.triangle")
+        
+        if(isOther) {
+            didSubstract = delete
+        } else {
+            self.didAdd = add
+            self.didSubstract = substract
+        }
         save()
     }
     
@@ -76,6 +88,23 @@ class CoinViewModel:ObservableObject {
                 print("Error while deleting coinEntitiy")
             }
         }
+        CoreDataManager.instance.saveDataNow()
+        if(didDelete != nil){
+            didDelete!()
+        }
+    }
+    
+    func substract() {
+        if number > 0{
+            number-=1
+            HapticFeedback.ok()
+        }
+    }
+    
+    func add() {
+        number+=1
+        HapticFeedback.ok()
+        
     }
     
     func reloadModel() {

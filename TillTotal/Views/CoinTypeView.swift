@@ -10,6 +10,10 @@ import SwiftUI
 struct CoinTypeView: View {
     @ObservedObject var vm:CoinTypeViewModel
     
+    init(vm: CoinTypeViewModel) {
+        self.vm = vm
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             HStack{
@@ -26,7 +30,7 @@ struct CoinTypeView: View {
             ScrollView(showsIndicators: false){
                 Spacer(minLength: 20)
                 ForEach(vm.coins) { coin in
-                    let cVM = CoinViewModel(coinEntity: coin, isOther: vm.isOther)
+                    let cVM = CoinViewModel(coinEntity: coin, isOther: vm.isOther, didDelete: vm.reloadModel)
                     CoinView(viewModel: cVM)
                 }
                 Spacer()

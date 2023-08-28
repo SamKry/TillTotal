@@ -11,8 +11,6 @@ import SwiftUI
 class CoinTypeViewModel:ObservableObject, Identifiable {
     private var coinTypeEntity:CoinTypeEntity
     
-    private let repository = CoinEntityReopsitory(container: CoreDataManager.instance.container)
-    
     @Published var coins:[CoinEntity] = []
     let icon:Image
     let isOther:Bool
@@ -28,17 +26,6 @@ class CoinTypeViewModel:ObservableObject, Identifiable {
         if(isOther){
             coinTypeEntity.didReset = {
                 self.reloadModel()
-//                do{
-//                    for i in 3...self.coins.count-1{
-//                        try self.repository.delete(entity: self.coins[i])
-//                    }
-//                } catch {
-//                    print("Error while deleting coins")
-//                }
-//                self.coins.removeAll()
-//                self.addOther()
-//                self.addOther()
-//                self.addOther()
             }
         }
     }
@@ -52,11 +39,14 @@ class CoinTypeViewModel:ObservableObject, Identifiable {
     
     func reloadModel() {
         CoreDataManager.instance.saveDataNow()
-        let sortedCoins = coinTypeEntity.coins?.sortedArray(using: [NSSortDescriptor(key: "value", ascending: false)])
         coins.removeAll()
+        let sortedCoins = coinTypeEntity.coins?.sortedArray(using: [NSSortDescriptor(key: "value", ascending: false)])
+        if(sortedCoins == nil){
+            print("Sorted coins is nil!")
+            return
+        }
         self.coins = sortedCoins as! [CoinEntity]
     }
-    
     func save() {
         CoreDataManager.instance.saveData()
     }

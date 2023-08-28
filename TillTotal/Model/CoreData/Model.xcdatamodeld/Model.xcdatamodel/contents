@@ -3,7 +3,7 @@
     <entity name="CoinEntity" representedClassName="CoinEntity" syncable="YES" codeGenerationType="category">
         <attribute name="number" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="value" attributeType="Double" defaultValueString="1" usesScalarValueType="YES"/>
-        <relationship name="coinType" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CoinTypeEntity" inverseName="coins" inverseEntity="CoinTypeEntity"/>
+        <relationship name="coinType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CoinTypeEntity" inverseName="coins" inverseEntity="CoinTypeEntity"/>
     </entity>
     <entity name="CoinTypeEntity" representedClassName="CoinTypeEntity" syncable="YES" codeGenerationType="category">
         <attribute name="icon" attributeType="String" defaultValueString="exclamationmark.triangle"/>
