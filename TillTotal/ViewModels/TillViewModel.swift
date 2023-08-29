@@ -15,7 +15,7 @@ class TillViewModel:ObservableObject {
     @Published var cashStock:Double {
         didSet {
             tillEntity.cashStock = cashStock
-            updateDiff()
+            updateVariables()
             save()
         }
     }
@@ -30,7 +30,7 @@ class TillViewModel:ObservableObject {
     private let id:UUID
     @Published var name:String
     
-    @Published var notOthersIs:Double = 0.0
+    @Published var cashIs:Double = 0.0
     @Published var othersIs:Double = 0.0
     
     @Published var diff:Double = 0.0
@@ -42,6 +42,7 @@ class TillViewModel:ObservableObject {
         self.refrenceTotal = tillEntity.refrenceTotal
         self.name = tillEntity.name!
         self.id = tillEntity.id!
+        updateVariables()
     }    
     
     func updateVariables() {
@@ -56,18 +57,18 @@ class TillViewModel:ObservableObject {
     
     private func updateCoins(){
         othersIs = 0.0
-        notOthersIs = 0.0
+        cashIs = -cashStock
         for coinType in currencyEntity.coinTypes?.allObjects as! [CoinTypeEntity] {
             if(coinType.isOther){
                 othersIs += coinType.getTotal()
             } else {
-                notOthersIs += coinType.getTotal()
+                cashIs += coinType.getTotal()
             }
         }
     }
     
     func getTotal() -> Double {
-        return notOthersIs + othersIs
+        return cashIs + othersIs
     }
     
     func save() {
@@ -79,10 +80,6 @@ class TillViewModel:ObservableObject {
     func reset() {
         cashStock = 2000
         refrenceTotal = 0.0
-//        for coinType in currencyEntity.coinTypes?.allObjects as! [CoinTypeEntity] {
-//            coinType.reset()
-//        }
         CoreDataManager.instance.saveData()
     }
-    
 }

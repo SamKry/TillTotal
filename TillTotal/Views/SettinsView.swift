@@ -10,6 +10,12 @@ import SwiftUI
 struct SettinsView: View {
     
     @ObservedObject var vm: TillViewModel
+    @ObservedObject var contentVM:ContentViewModel
+    
+    init(vm: TillViewModel, contentVM: ContentViewModel) {
+        self.vm = vm
+        self.contentVM = contentVM
+    }
     
     var body: some View {
         VStack {
@@ -39,6 +45,7 @@ struct SettinsView: View {
                     
                     ResetButton {
                         vm.reset()
+                        contentVM.reset()
                     }
                     .padding(.bottom)
                 }

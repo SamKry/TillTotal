@@ -10,6 +10,7 @@ import SwiftUI
 struct TillView: View {
     
     @ObservedObject var vm: TillViewModel
+    @ObservedObject var contentVM: ContentViewModel
     
     var body: some View {
         VStack{
@@ -46,7 +47,7 @@ struct TillView: View {
                         }
                         GridRow {
                             Text("Bar")
-                            Text("\(String(format: "%.2f", vm.notOthersIs))")
+                            Text("\(String(format: "%.2f", vm.cashIs))")
                                 .textSelection(.enabled)
                             Color.clear
                                 .gridCellUnsizedAxes([.horizontal, .vertical])
@@ -89,7 +90,7 @@ struct TillView: View {
             )
             .cornerRadius(30)
             
-            SettinsView(vm: vm)
+            SettinsView(vm: vm, contentVM: contentVM)
             
             Spacer()
         }

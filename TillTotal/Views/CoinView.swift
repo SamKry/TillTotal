@@ -13,30 +13,68 @@ struct CoinView: View {
     
     @ObservedObject var viewModel:CoinViewModel
     
-    @State var total:Double = 0.0
-    
     init(viewModel:CoinViewModel) {
         self.viewModel = viewModel
     }
     
-    func calcTotal(_ newNumber:Int64){
-        viewModel.number = Int64(Double(newNumber)+0.5)
-        self.total = viewModel.value*Double(viewModel.number)
+    var body: some View {
+        var view: AnyView
+        
+        if viewModel.isOther {
+            view = AnyView(getOther())
+        }
+        else {
+            view = AnyView(getNotOther())
+        }
+        
+        return view
+            .onAppear{
+                viewModel.reloadModel()
+                viewModel.calcTotal()
+            }
+            .onChange(of: viewModel.number) { _ in
+                viewModel.calcTotal()
+            }
+            .onChange(of: viewModel.total) { _ in
+                viewModel.calcNumber()
+            }
+            .modifier(DragGestureViewModifier(
+                onUpdate: { value in
+                    KeyboardHandler.hideKeyboard()
+                    withAnimation(.easeInOut(duration: 0.4)){
+                        currentDragOffsetX = value.translation.width
+                    }
+                },
+                onEnd: {
+                    dragged()
+                },
+                onCancel: {
+                    dragged()
+                }
+            ))
+            .offset(x: currentDragOffsetX)
+            .background(
+                HStack{
+                    if(viewModel.didSubstract != nil){
+                        Image(systemName: "minus.circle")
+                            .foregroundColor((viewModel.number != 0) ? Color("Error") : Color("Neutral-Medium"))
+                    }
+                    Spacer()
+                    if(viewModel.didAdd != nil){
+                        Image(systemName: "plus.circle")
+                            .foregroundColor(Color("Idle"))
+                    }
+                }
+                    .font(.system(size: 25, weight: .heavy))
+                    .padding(.horizontal)
+            )
     }
     
-    func calcNumber(_ newTotal:Double){
-        viewModel.number = Int64((newTotal/viewModel.value)+0.5)
-        calcTotal(viewModel.number)
-    }
-    
-    var other: some View {
+    private func getOther() -> some View {
         ZStack {
             Color("Neutral-Medium")
             HStack(spacing: 0) {
-                viewModel.icon
-                Spacer()
                 TextFieldDecimal(value: $viewModel.value, text: "Betrag")
-                    .padding(.leading, 7)
             }
             .foregroundColor(Color("Main"))
             .font(.system(size: 20, weight: .light))
@@ -46,17 +84,17 @@ struct CoinView: View {
         .cornerRadius(70/4)
     }
     
-    var notOther: some View {
+    private func getNotOther() -> some View {
         ZStack {
             Color("Neutral-Medium")
             HStack(spacing: 0) {
-                viewModel.icon
-                    .padding(.trailing, 5)
                 
                 if (viewModel.value.truncatingRemainder(dividingBy: 1) == 0) {
                     Text(String(Int(viewModel.value)))
+                        .lineLimit(1)
                 } else {
                     Text(String(viewModel.value))
+                        .lineLimit(1)
                 }
                 
                 Spacer()
@@ -69,86 +107,36 @@ struct CoinView: View {
                 
                 Text("=")
                     .padding(.horizontal, 7)
-                TextFieldDecimal(value: $total, text: "Total")
+                TextFieldDecimal(value: $viewModel.total, text: "Total")
                     .frame(width: 100)
                     .foregroundColor(Color("Idle"))
             }
             .foregroundColor(Color("Main"))
             .font(.system(size: 20, weight: .light))
             .padding(.horizontal, 12)
+            
         }
         
         .frame(height: 70)
         .cornerRadius(70/4)
         
-        .modifier(DragGestureViewModifier(
-            onUpdate: { value in
-                KeyboardHandler.hideKeyboard()
-                withAnimation(.easeInOut(duration: 0.4)){
-                    currentDragOffsetX = value.translation.width
-                }
-            },
-            onEnd: {
-                withAnimation(.easeInOut(duration: 0.2)){
-                    if currentDragOffsetX < -dragThreashold{
-                        viewModel.number+=1
-                        HapticFeedback.ok()
-                    }else if currentDragOffsetX > dragThreashold{
-                        if viewModel.number > 0{
-                            viewModel.number-=1
-                            HapticFeedback.ok()
-                        }
-                    }
-                    currentDragOffsetX = 0
-                }
-            },
-            onCancel: {
-                withAnimation(.easeInOut(duration: 0.2)){
-                    if currentDragOffsetX < -dragThreashold{
-                        viewModel.number+=1
-                    }else if currentDragOffsetX > dragThreashold{
-                        if viewModel.number > 0{
-                            viewModel.number-=1
-                        }
-                    }
-                    currentDragOffsetX = 0
-                }
-            }
-        ))
-        .offset(x: currentDragOffsetX)
-        .background(
-            HStack{
-                Image(systemName: "minus.circle")
-                    .foregroundColor((viewModel.number != 0) ? Color("Error") : Color("Neutral-Medium"))
-                Spacer()
-                Image(systemName: "plus.circle")
-                    .foregroundColor(Color("Idle"))
-            }
-                .font(.system(size: 25, weight: .heavy))
-                .padding(.horizontal)
-        )
+        
     }
     
-    var body: some View {
-        var view: AnyView
-        
-        if viewModel.isOther {
-            view = AnyView(other)
+    fileprivate func dragged() {
+        withAnimation(.easeInOut(duration: 0.2)){
+            if (currentDragOffsetX < -dragThreashold) {
+                if(viewModel.didAdd != nil) {
+                    viewModel.didAdd!()
+                }
+            } else if (currentDragOffsetX > dragThreashold) {
+                if(viewModel.didSubstract != nil){
+                    viewModel.didSubstract!()
+                }
+            }
+            currentDragOffsetX = 0
         }
-        else {
-            view = AnyView(notOther)
-        }
-        
-        return view
-            .onAppear{
-                calcTotal(viewModel.number)
-            }
-            .onChange(of: viewModel.number) { newNumber in
-                calcTotal(newNumber)
-            }
-            .onChange(of: total) { newTotal in
-                calcNumber(newTotal)
-            }
     }
+    
 }
 

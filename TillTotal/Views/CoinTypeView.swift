@@ -10,27 +10,25 @@ import SwiftUI
 struct CoinTypeView: View {
     @ObservedObject var vm:CoinTypeViewModel
     
+    init(vm: CoinTypeViewModel) {
+        self.vm = vm
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
-            HStack{                
+            HStack{
                 Text(vm.name)
-                
-                    .font(.largeTitle)
-                    .foregroundColor(Color("Main"))
                 Spacer()
-                
-                Text("Zwischentotal: na")
             }
+            .font(.largeTitle)
+            .foregroundColor(Color("Main"))
             .padding(.horizontal)
             
             ScrollView(showsIndicators: false){
                 Spacer(minLength: 20)
                 ForEach(vm.coins) { coin in
-                    let cVM = CoinViewModel(coinEntity: coin, superVM: vm)
+                    let cVM = CoinViewModel(coinEntity: coin, isOther: vm.isOther, didDelete: vm.reloadModel)
                     CoinView(viewModel: cVM)
-                        .onChange(of: cVM.number) { neNumber in
-                            print(neNumber)
-                        }
                 }
                 Spacer()
             }
@@ -49,7 +47,9 @@ struct CoinTypeView: View {
                         .padding(.bottom, 10)
                 }
             }
-            
+        }
+        .onAppear{
+            vm.reloadModel()
         }
         .padding(.horizontal)
         .padding(.top)
