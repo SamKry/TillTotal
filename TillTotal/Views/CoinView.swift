@@ -74,10 +74,7 @@ struct CoinView: View {
         ZStack {
             Color("Neutral-Medium")
             HStack(spacing: 0) {
-                viewModel.icon
-                Spacer()
                 TextFieldDecimal(value: $viewModel.value, text: "Betrag")
-                    .padding(.leading, 7)
             }
             .foregroundColor(Color("Main"))
             .font(.system(size: 20, weight: .light))
@@ -91,13 +88,13 @@ struct CoinView: View {
         ZStack {
             Color("Neutral-Medium")
             HStack(spacing: 0) {
-                viewModel.icon
-                    .padding(.trailing, 5)
                 
                 if (viewModel.value.truncatingRemainder(dividingBy: 1) == 0) {
                     Text(String(Int(viewModel.value)))
+                        .lineLimit(1)
                 } else {
                     Text(String(viewModel.value))
+                        .lineLimit(1)
                 }
                 
                 Spacer()
@@ -117,12 +114,13 @@ struct CoinView: View {
             .foregroundColor(Color("Main"))
             .font(.system(size: 20, weight: .light))
             .padding(.horizontal, 12)
+            
         }
         
         .frame(height: 70)
         .cornerRadius(70/4)
         
-       
+        
     }
     
     fileprivate func dragged() {

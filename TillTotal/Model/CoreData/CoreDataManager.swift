@@ -32,7 +32,7 @@ class CoreDataManager{
         debounceTimer?.invalidate() // Invalidate the existing timer
         
         // Create a new timer that delays the saveData() call
-        debounceTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
+        debounceTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
             self?.saveDataNow()
         }
     }

@@ -18,13 +18,10 @@ struct CoinTypeView: View {
         VStack(spacing: 0) {
             HStack{
                 Text(vm.name)
-                
-                    .font(.largeTitle)
-                    .foregroundColor(Color("Main"))
                 Spacer()
-                
-                Text("Zwischentotal: na")
             }
+            .font(.largeTitle)
+            .foregroundColor(Color("Main"))
             .padding(.horizontal)
             
             ScrollView(showsIndicators: false){

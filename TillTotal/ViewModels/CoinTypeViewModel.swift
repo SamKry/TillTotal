@@ -20,6 +20,7 @@ class CoinTypeViewModel:ObservableObject, Identifiable {
         self.coinTypeEntity = coinTypeEntity
         
         self.coins = coinTypeEntity.coins?.sortedArray(using: [NSSortDescriptor(key: "value", ascending: false)]) as! [CoinEntity]
+        
         self.icon = Image(systemName: coinTypeEntity.icon ?? "exclamationmark.questionmark")
         self.isOther = coinTypeEntity.isOther
         self.name = coinTypeEntity.name ?? "NoName"
@@ -47,6 +48,7 @@ class CoinTypeViewModel:ObservableObject, Identifiable {
         }
         self.coins = sortedCoins as! [CoinEntity]
     }
+    
     func save() {
         CoreDataManager.instance.saveData()
     }
