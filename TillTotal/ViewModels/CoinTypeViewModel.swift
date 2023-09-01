@@ -36,6 +36,7 @@ class CoinTypeViewModel:ObservableObject, Identifiable {
         newCoin.coinType = coinTypeEntity
         coins.append(newCoin)
         save()
+        HapticFeedback.ok()
     }
     
     func reloadModel() {

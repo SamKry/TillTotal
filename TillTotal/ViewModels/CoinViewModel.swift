@@ -99,6 +99,7 @@ class CoinViewModel:ObservableObject {
         if(didDelete != nil){
             didDelete!()
         }
+        HapticFeedback.error()
     }
     
     func substract() {
