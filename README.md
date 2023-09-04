@@ -24,9 +24,10 @@ TillTotal is an iOS app developed in Xcode that simplifies cash counting and tra
 
 1. Launch TillTotal on your iOS device.
 2. Enter the quantity of each coin denomination or input the total amount of coins.
-3. Optionally, enter the individual count of banknotes.
-4. TillTotal will calculate the total cash amount and provide a comprehensive overview of your daily earnings.
-5. View and generate reports to track and analyze your cash flow.
+3. Additionally, enter other amounts such as from kedit cards, etc.
+4. TillTotal will calculate the total amount and provide a comprehensive overview of your daily earnings.
+5. Enter the chash stock and the refrence total.
+6. View and generate reports to track and analyze your cash flow.
 
 ## Contributing
 
