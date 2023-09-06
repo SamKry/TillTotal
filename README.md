@@ -4,7 +4,7 @@
 <img src="Resources/AppIcon/TillTotalAppIcon.png" align="right" alt="App Icon" width="90" height="90">
 </h1>
 
-<h4 align="center">iOS APP for calculating blue</h4>
+<h4 align="center">Cash Counting Made Simple.</h4>
 
 
 <p align="center">
