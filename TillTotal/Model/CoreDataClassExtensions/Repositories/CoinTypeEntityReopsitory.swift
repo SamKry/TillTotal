@@ -19,7 +19,6 @@ class CoinTypeEntityReopsitory:Repository {
     func getAll() throws -> [CoinTypeEntity] {
         let request = CoinTypeEntity.fetchRequest()
         let vals = try container.viewContext.fetch(request)
-        print("Found \(vals.count) CoinType Entities")
         return vals
     }
     
