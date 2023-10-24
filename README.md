@@ -9,8 +9,8 @@
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
+  <a href="https://apps.apple.com/ch/app/tilltotal/id6469705764">Download</a> •
   <a href="#installation">How To Use</a> •
-  <a href="#download">Download</a> •
   <a href="#license">License</a> •
   <a href="#contact">Contact</a>
 </p>
