@@ -31,6 +31,10 @@ TillTotal is an iOS app developed in Xcode that simplifies cash counting and tra
 
 ## Installation
 
+### Through the App Store
+Download TillTotal from the [App Store](https://apps.apple.com/ch/app/tilltotal/id6469705764).
+
+### Using Xcode
 1. Clone or download the TillTotal repository to your local machine.
 2. Open the project in Xcode.
 3. Connect your iOS device or use the iOS Simulator.
