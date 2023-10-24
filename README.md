@@ -6,7 +6,7 @@
 
 <h4 align="center">Cash Counting Made Simple.</h4>
 
-<a href="https://apps.apple.com/us/app/tilltotal/id1560196220">
+<a href="https://apps.apple.com/ch/app/tilltotal/id6469705764">
   <img src="Resources/AppStore/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" align="right" alt="Download on the App Store" width="150" height="50">
 </a>
 
