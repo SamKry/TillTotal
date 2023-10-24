@@ -22,6 +22,7 @@ TillTotal is an iOS app developed in Xcode that simplifies cash counting and tra
 
 ## Key Features
 
+- **Data consistency**: TillTotal uses Core Data to store data locally on your device, ensuring data consistency and privacy.
 - **Flexible Coin Counting**: Easily enter the quantity of each coin denomination or directly input the total amount of coins.
 - **Banknote Tracking**: Track banknote count individually for accurate cash management.
 - **Precise Cash Calculations**: TillTotal accurately calculates and tallies the daily earnings, ensuring precision in financial tracking.
