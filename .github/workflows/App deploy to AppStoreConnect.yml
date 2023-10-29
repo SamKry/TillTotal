@@ -18,6 +18,9 @@ jobs:
     
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Install GPG
+        run: brew install gnupg
         
       - name: Install the Apple certificate and provisioning profile
         env:
