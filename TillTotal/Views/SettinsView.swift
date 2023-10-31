@@ -26,7 +26,6 @@ struct SettinsView: View {
                         .foregroundColor(Color("Main"))
                     Spacer()
                 }
-                .padding(.horizontal)
                 
                 VStack {
                     

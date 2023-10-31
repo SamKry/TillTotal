@@ -13,18 +13,16 @@ struct TillView: View {
     @ObservedObject var contentVM: ContentViewModel
     
     var body: some View {
-        VStack{
+        ScrollView(showsIndicators: false){
             VStack{
                 HStack{
                     Text("Abrechnung")
-                        .font(.largeTitle)
-                        .foregroundColor(Color("Main"))
                     Spacer()
                 }
-                .padding(.horizontal)
+                .font(.largeTitle)
+                .foregroundColor(Color("Main"))
                 
                 VStack {
-                    
                     Grid(alignment: .leading, horizontalSpacing: 5, verticalSpacing: 10) {
                         GridRow {
                             Color.clear
@@ -46,8 +44,15 @@ struct TillView: View {
                                 .gridCellUnsizedAxes([.horizontal, .vertical])
                         }
                         GridRow {
-                            Text("Bar")
-                            Text("\(String(format: "%.2f", vm.cashIs))")
+                            Text("Bar brutto")
+                            Text("\(String(format: "%.2f", vm.cashBrutto))")
+                                .textSelection(.enabled)
+                            Color.clear
+                                .gridCellUnsizedAxes([.horizontal, .vertical])
+                        }
+                        GridRow {
+                            Text("Bar netto")
+                            Text("\(String(format: "%.2f", vm.cashNetto))")
                                 .textSelection(.enabled)
                             Color.clear
                                 .gridCellUnsizedAxes([.horizontal, .vertical])

@@ -30,7 +30,8 @@ class TillViewModel:ObservableObject {
     private let id:UUID
     @Published var name:String
     
-    @Published var cashIs:Double = 0.0
+    @Published var cashNetto:Double = 0.0
+    @Published var cashBrutto:Double = 0.0
     @Published var othersIs:Double = 0.0
     
     @Published var diff:Double = 0.0
@@ -57,18 +58,19 @@ class TillViewModel:ObservableObject {
     
     private func updateCoins(){
         othersIs = 0.0
-        cashIs = -cashStock
+        cashBrutto = 0.0
         for coinType in currencyEntity.coinTypes?.allObjects as! [CoinTypeEntity] {
             if(coinType.isOther){
                 othersIs += coinType.getTotal()
             } else {
-                cashIs += coinType.getTotal()
+                cashBrutto += coinType.getTotal()
             }
         }
+        cashNetto = cashBrutto - cashStock
     }
     
     func getTotal() -> Double {
-        return cashIs + othersIs
+        return cashNetto + othersIs
     }
     
     func save() {
