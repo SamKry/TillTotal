@@ -29,6 +29,7 @@ struct CoinTypeView: View {
                 ForEach(vm.coins) { coin in
                     let cVM = CoinViewModel(coinEntity: coin, isOther: vm.isOther, didDelete: vm.reloadModel)
                     CoinView(viewModel: cVM)
+                        .padding(.horizontal)
                 }
                 Spacer()
             }
@@ -51,7 +52,6 @@ struct CoinTypeView: View {
         .onAppear{
             vm.reloadModel()
         }
-        .padding(.horizontal)
         .padding(.top)
         .background(
             Color("Neutral-Ultra")
