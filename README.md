@@ -18,6 +18,12 @@
   <a href="#contact">Contact</a>
 </p>
 
+<p align="center">
+  <a href="https://github.com/SamKry/TillTotal/actions/workflows/ios.yml">
+  <img src="https://github.com/SamKry/TillTotal/actions/workflows/ios.yml/badge.svg" alt="iOS compile and test">
+  </a>
+</p>
+
 TillTotal is an iOS app developed in Xcode that simplifies cash counting and tracking for store owners and individuals. With TillTotal, you can conveniently enter the amount of individual coins or input the total amount, providing flexibility for different counting methods. This feature proves particularly useful when counting banknotes individually but calculating the total value of coins.
 
 ## Key Features
