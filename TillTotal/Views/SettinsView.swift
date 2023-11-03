@@ -19,7 +19,7 @@ struct SettinsView: View {
     
     var body: some View {
         VStack {
-            VStack {
+            VStack {	
                 HStack {
                     Text("Einstellungen")
                         .font(.largeTitle)
@@ -47,6 +47,8 @@ struct SettinsView: View {
                         contentVM.reset()
                     }
                     .padding(.bottom)
+                    
+                    swipeButton()
                 }
                 .background(Color("Neutral-Medium"))
                 .cornerRadius(70/4)
