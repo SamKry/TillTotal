@@ -63,8 +63,11 @@ struct TillView: View {
                         GridRow {
                             Text("Gesamt")
                             Text("\(String(format: "%.2f", vm.getTotal()))")
+                            
                             TextFieldDecimal(value: $vm.refrenceTotal, text: "Total soll")
-                                .keyboardType(.decimalPad)
+                                .onSubmit {
+                                    vm.updateLocalVariables()
+                                }
                                 .foregroundColor(Color("Main"))
                                 .padding(5)
                                 .frame(height: 35)
@@ -100,7 +103,7 @@ struct TillView: View {
             Spacer()
         }
         .onAppear{
-            vm.updateVariables()
+            vm.refetchAndUpdateVariables()
         }
         .onTapGesture {
             KeyboardHandler.hideKeyboard()

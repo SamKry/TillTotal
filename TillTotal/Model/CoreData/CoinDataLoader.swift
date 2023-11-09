@@ -28,6 +28,7 @@ class CoinDataLoader{
     }
     
     static func initTill() -> TillEntity {
+        print("init a new Till")
         let newTill = TillEntity(context: context)
         newTill.name = "default Till"
         newTill.cashStock = 2000

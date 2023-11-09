@@ -21,7 +21,7 @@ class CustomNumberFormatter: NumberFormatter {
         let formatter = CustomNumberFormatter()
         formatter.numberStyle = .decimal
         formatter.usesGroupingSeparator = false // Remove commas
-        formatter.minimumFractionDigits = 2
+//        formatter.minimumFractionDigits = 2 // TODO: not sure if this is needed
         return formatter
     }()
 

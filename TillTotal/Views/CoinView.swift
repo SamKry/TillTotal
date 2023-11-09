@@ -32,12 +32,6 @@ struct CoinView: View {
                 viewModel.reloadModel()
                 viewModel.calcTotal()
             }
-            .onChange(of: viewModel.number) { _ in
-                viewModel.calcTotal()
-            }
-            .onChange(of: viewModel.total) { _ in
-                viewModel.calcNumber()
-            }
             .modifier(DragGestureViewModifier(
                 onUpdate: { value in
                     KeyboardHandler.hideKeyboard()
@@ -102,12 +96,18 @@ struct CoinView: View {
                 Text("x")
                 
                 TextFieldInt(value: $viewModel.number, text: "Anzahl")
+                    .onSubmit {
+                        viewModel.calcTotal()
+                    }
                     .frame(width: 100)
                     .padding(.leading, 7)
                 
                 Text("=")
                     .padding(.horizontal, 7)
                 TextFieldDecimal(value: $viewModel.total, text: "Total")
+                    .onSubmit {
+                        viewModel.calcNumber()
+                    }
                     .frame(width: 100)
                     .foregroundColor(Color("Idle"))
             }

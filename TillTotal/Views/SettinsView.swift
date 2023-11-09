@@ -36,6 +36,9 @@ struct SettinsView: View {
                         Spacer()
                         
                         TextFieldDecimal(value: $vm.cashStock, text: "Kassenstock")
+                            .onSubmit {
+                                vm.updateLocalVariables()
+                            }
                         
                     }
                     .foregroundColor(Color("Main"))

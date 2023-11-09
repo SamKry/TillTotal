@@ -12,28 +12,19 @@ class TillViewModel:ObservableObject {
     @Published var tillEntity:TillEntity
     private let currencyEntity:CurrencyEntity
     
-    @Published var cashStock:Double {
-        didSet {
-            tillEntity.cashStock = cashStock
-            updateVariables()
-            save()
-        }
-    }
-    @Published var refrenceTotal:Double{
-        didSet {
-            tillEntity.refrenceTotal = refrenceTotal
-            updateDiff()
-            save()
-        }
-    }
-    
     private let id:UUID
     @Published var name:String
     
-    @Published var cashNetto:Double = 0.0
+    // can be set via textfield must call updateLocalVariables() after update
+    @Published var cashStock:Double
+    @Published var refrenceTotal:Double
+    
+    // set by coinTypes and calculated by updateCoins()
     @Published var cashBrutto:Double = 0.0
     @Published var othersIs:Double = 0.0
     
+    // Calculated by updateVariables()
+    @Published var cashNetto:Double = 0.0
     @Published var diff:Double = 0.0
     
     init(tillEntity:TillEntity) {
@@ -43,17 +34,18 @@ class TillViewModel:ObservableObject {
         self.refrenceTotal = tillEntity.refrenceTotal
         self.name = tillEntity.name!
         self.id = tillEntity.id!
-        updateVariables()
+        refetchAndUpdateVariables()
     }    
     
-    func updateVariables() {
+    func refetchAndUpdateVariables() {
         updateCoins()
-        updateDiff()
-        save()
+        updateLocalVariables()
     }
     
-    func updateDiff() {
-        diff = getTotal() - refrenceTotal
+    func updateLocalVariables() {
+        updateCash()
+        updateDiff()
+        save()
     }
     
     private func updateCoins(){
@@ -66,7 +58,14 @@ class TillViewModel:ObservableObject {
                 cashBrutto += coinType.getTotal()
             }
         }
+    }
+    
+    func updateCash(){
         cashNetto = cashBrutto - cashStock
+    }
+    
+    func updateDiff() {
+        diff = getTotal() - refrenceTotal
     }
     
     func getTotal() -> Double {
@@ -80,8 +79,8 @@ class TillViewModel:ObservableObject {
     }
     
     func reset() {
-        cashStock = 2000
+        cashStock = 2000.0
         refrenceTotal = 0.0
-        CoreDataManager.instance.saveData()
+        save()
     }
 }
