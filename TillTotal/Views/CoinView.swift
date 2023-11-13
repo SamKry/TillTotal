@@ -90,26 +90,28 @@ struct CoinView: View {
             Color("Neutral-Medium")
             HStack(spacing: 0) {
                 
-                if (viewModel.value.truncatingRemainder(dividingBy: 1) == 0) {
-                    Text(String(Int(viewModel.value)))
-                        .lineLimit(1)
-                } else {
-                    Text(String(viewModel.value))
-                        .lineLimit(1)
+                HStack{
+                    if (viewModel.value.truncatingRemainder(dividingBy: 1) == 0) {
+                        Text(String(Int(viewModel.value)))
+                            .lineLimit(1)
+                    } else {
+                        Text(String(viewModel.value))
+                            .lineLimit(1)
+                    }
+                    
+                    Spacer()
+                    
+                    Text("x")
                 }
                 
-                Spacer()
-                
-                Text("x")
-                
                 TextFieldInt(value: $viewModel.number, text: "Anzahl", onSubmitAction: viewModel.calcTotal)
-                    .frame(width: 100)
+                    .frame(minWidth: 100)
                     .padding(.leading, 7)
                 
                 Text("=")
                     .padding(.horizontal, 7)
                 TextFieldDecimal(value: $viewModel.total, text: "Total", onSubmitAction: viewModel.calcNumber) // onSubmitAction Still needed for Mac App
-                    .frame(width: 100)
+                    .frame(minWidth: 100)
                     .foregroundColor(Color("Idle"))
                     .focused($isTotalFieldFocused)
             }
