@@ -11,7 +11,8 @@ import SwiftUI
 class CoinTypeViewModel:ObservableObject, Identifiable {
     private var coinTypeEntity:CoinTypeEntity
     
-    @Published var coins:[CoinEntity] = []
+    private var coins:[CoinEntity] = []
+    @Published var coinVMs:[CoinViewModel] = []
     let icon:Image
     let isOther:Bool
     let name:String
@@ -24,6 +25,7 @@ class CoinTypeViewModel:ObservableObject, Identifiable {
         self.icon = Image(systemName: coinTypeEntity.icon ?? "exclamationmark.questionmark")
         self.isOther = coinTypeEntity.isOther
         self.name = coinTypeEntity.name ?? "NoName"
+        reloadVMs()        
         if(isOther){
             coinTypeEntity.didReset = {
                 self.reloadModel()
@@ -31,12 +33,32 @@ class CoinTypeViewModel:ObservableObject, Identifiable {
         }
     }
     
+    func reloadVMs(){
+        coinVMs.removeAll()
+        for coin in coins {
+            coinVMs.append(
+                CoinViewModel(
+                    coinEntity: coin,
+                    isOther: isOther,
+                    didDelete: reloadModel))
+        }
+    }
+    
     func addOther() {
         let newCoin = CoinDataLoader.initCoin(value: 0)
         newCoin.coinType = coinTypeEntity
         coins.append(newCoin)
+        coinVMs.append(CoinViewModel(coinEntity: newCoin, isOther: isOther, didDelete: reloadModel))
         save()
         HapticFeedback.ok()
+    }
+    
+    func revalidateAll(){
+        if(!isOther){
+            for coinVM in coinVMs {
+                coinVM.refreshValues()
+            }
+        }
     }
     
     func reloadModel() {
@@ -48,6 +70,7 @@ class CoinTypeViewModel:ObservableObject, Identifiable {
             return
         }
         self.coins = sortedCoins as! [CoinEntity]
+        reloadVMs()
     }
     
     func save() {

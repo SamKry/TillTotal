@@ -26,6 +26,7 @@ struct ContentView: View {
                 CoinTypeView(vm: coinTypeVM)
                     .onTapGesture {
                         KeyboardHandler.hideKeyboard()
+                        coinTypeVM.revalidateAll()
                     }.tabItem {
                         coinTypeVM.icon
                         Text(coinTypeVM.name)
@@ -38,6 +39,7 @@ struct ContentView: View {
                     Text("Abrechnung")
                 }
         }
+        .scrollDismissesKeyboard(ScrollDismissesKeyboardMode.interactively)
         .accentColor(Color("Main"))
     }
 }

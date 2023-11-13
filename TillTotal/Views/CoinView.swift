@@ -10,6 +10,7 @@ import SwiftUI
 struct CoinView: View {
     @State var currentDragOffsetX: CGFloat = 0  // must stay 0!
     private let dragThreashold:CGFloat = 70
+    @FocusState var isTotalFieldFocused:Bool
     
     @ObservedObject var viewModel:CoinViewModel
     
@@ -68,7 +69,7 @@ struct CoinView: View {
         ZStack {
             Color("Neutral-Medium")
             HStack(spacing: 0) {
-                TextFieldDecimal(value: $viewModel.value, text: "Betrag")
+                TextFieldDecimal(value: $viewModel.value, text: "Betrag", onSubmitAction: {})
             }
             .foregroundColor(Color("Main"))
             .font(.system(size: 20, weight: .light))
@@ -95,22 +96,20 @@ struct CoinView: View {
                 
                 Text("x")
                 
-                TextFieldInt(value: $viewModel.number, text: "Anzahl")
-                    .onSubmit {
-                        viewModel.calcTotal()
-                    }
+                TextFieldInt(value: $viewModel.number, text: "Anzahl", onSubmitAction: viewModel.calcTotal)
                     .frame(width: 100)
                     .padding(.leading, 7)
                 
                 Text("=")
                     .padding(.horizontal, 7)
-                TextFieldDecimal(value: $viewModel.total, text: "Total")
-                    .onSubmit {
-                        viewModel.calcNumber()
-                    }
+                TextFieldDecimal(value: $viewModel.total, text: "Total", onSubmitAction: viewModel.calcNumber) // onSubmitAction Still needed for Mac App
                     .frame(width: 100)
                     .foregroundColor(Color("Idle"))
+                    .focused($isTotalFieldFocused)
             }
+            .onChange(of: isTotalFieldFocused, perform: { _ in
+                viewModel.calcNumber()
+            })
             .foregroundColor(Color("Main"))
             .font(.system(size: 20, weight: .light))
             .padding(.horizontal, 12)

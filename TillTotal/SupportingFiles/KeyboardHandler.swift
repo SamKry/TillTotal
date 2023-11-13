@@ -9,7 +9,6 @@ import SwiftUI
 
 class KeyboardHandler {
     public static func hideKeyboard(){
-        // TODO: Currently disabled for hotfix of number formatting
-//        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }

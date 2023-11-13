@@ -7,22 +7,26 @@
 
 import SwiftUI
 
-class CoinViewModel:ObservableObject {
+class CoinViewModel:ObservableObject,Identifiable {
     private var coinEntity:CoinEntity
     var repository = CoinEntityReopsitory(container: CoreDataManager.instance.container)
     
     @Published var didAdd:Callback?
     @Published var didSubstract:Callback?
     @Published var didDelete:Callback?
+    private var totalDidLastUpdate:Bool = true
     
     @Published var number:Int64 {
         didSet {
+            totalDidLastUpdate = false
             calcTotal()
             save()
         }
     }
+    
     @Published var value:Double {
         didSet {
+            totalDidLastUpdate = false
             calcTotal()
             save()
         }
@@ -30,6 +34,8 @@ class CoinViewModel:ObservableObject {
     
     @Published var total:Double{
         didSet {
+            // NOTE: Do not change self.number here! (will recall total.didSet())
+            totalDidLastUpdate = true
             save()
         }
     }
@@ -50,7 +56,7 @@ class CoinViewModel:ObservableObject {
         self.value = coinEntity.value
         self.icon = Image(systemName: coinEntity.coinType?.icon ?? "exclamationmark.triangle")
         self.total = 0
-        calcTotal(withCallback: false)
+        calcTotal()
         if(isOther) {
             didSubstract = delete
         } else {
@@ -60,7 +66,7 @@ class CoinViewModel:ObservableObject {
         save()
     }
     
-    func calcTotal(withCallback:Bool = true) {
+    func calcTotal() {
         let intNumber = Int64(Double(number)+0.5)
         let newTotal = value*Double(intNumber)
         self.total = newTotal
@@ -73,6 +79,17 @@ class CoinViewModel:ObservableObject {
             number = 0
         } else {
             number = Int64((total/value)+0.5)
+        }
+    }
+    
+    func refreshValues(){
+        if(totalDidLastUpdate) {
+            calcNumber()
+            calcTotal()
+        }
+        else {
+            calcTotal()
+            calcNumber()
         }
     }
     

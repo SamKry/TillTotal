@@ -16,8 +16,16 @@ class TillViewModel:ObservableObject {
     @Published var name:String
     
     // can be set via textfield must call updateLocalVariables() after update
-    @Published var cashStock:Double
-    @Published var refrenceTotal:Double
+    @Published var cashStock:Double{
+        didSet{
+            updateLocalVariables()
+        }
+    }
+    @Published var refrenceTotal:Double{
+        didSet{
+            updateLocalVariables()
+        }
+    }
     
     // set by coinTypes and calculated by updateCoins()
     @Published var cashBrutto:Double = 0.0

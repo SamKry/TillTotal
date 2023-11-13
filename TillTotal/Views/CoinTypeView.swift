@@ -26,9 +26,8 @@ struct CoinTypeView: View {
             
             ScrollView(showsIndicators: false){
                 Spacer(minLength: 20)
-                ForEach(vm.coins) { coin in
-                    let cVM = CoinViewModel(coinEntity: coin, isOther: vm.isOther, didDelete: vm.reloadModel)
-                    CoinView(viewModel: cVM)
+                ForEach(vm.coinVMs) { coinvm in
+                    CoinView(viewModel: coinvm)
                         .padding(.horizontal)
                 }
                 Spacer()
