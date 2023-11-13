@@ -34,9 +34,9 @@ struct CoinTypeView: View {
                     Spacer()
                 }
             }
-            VStack{
-                Spacer()
-                if (vm.isOther) {
+            if (vm.isOther) {
+                VStack{
+                    Spacer()
                     Button {
                         withAnimation {
                             vm.addOther()
@@ -64,7 +64,8 @@ struct CoinTypeView: View {
             vm.reloadModel()
         }
         .padding(.top)
-        .background(RoundedCornersShape(corners: [.topLeft, .topRight], radius: 30)
+        .background(
+            RoundedCornersShape(corners: [.topLeft, .topRight], radius: 30)
             .fill(Color("Neutral-Ultra"))
         )
     }
