@@ -15,6 +15,7 @@ class CoinViewModel:ObservableObject,Identifiable {
     @Published var didSubstract:Callback?
     @Published var didDelete:Callback?
     private var totalDidLastUpdate:Bool = true
+    @Published var shouldBeFocused:Bool = false
     
     @Published var number:Int64 {
         didSet {
@@ -43,10 +44,11 @@ class CoinViewModel:ObservableObject,Identifiable {
     let icon:Image
     var isOther:Bool
     
-    init(coinEntity: CoinEntity, isOther:Bool, didDelete:Callback?){
+    init(coinEntity: CoinEntity, isOther:Bool, shouldBeFocused:Bool? = false, didDelete:Callback?){
         self.coinEntity = coinEntity
         self.isOther = isOther
         self.didDelete = didDelete
+        self.shouldBeFocused = shouldBeFocused ?? false
         if(isOther){
             self.number = 1
             coinEntity.number = 1

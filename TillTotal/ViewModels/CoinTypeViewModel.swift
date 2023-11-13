@@ -48,7 +48,7 @@ class CoinTypeViewModel:ObservableObject, Identifiable {
         let newCoin = CoinDataLoader.initCoin(value: 0)
         newCoin.coinType = coinTypeEntity
         coins.append(newCoin)
-        coinVMs.append(CoinViewModel(coinEntity: newCoin, isOther: isOther, didDelete: reloadModel))
+        coinVMs.append(CoinViewModel(coinEntity: newCoin, isOther: isOther, shouldBeFocused: true, didDelete: reloadModel))
         save()
         HapticFeedback.ok()
     }

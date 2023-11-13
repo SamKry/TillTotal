@@ -70,10 +70,16 @@ struct CoinView: View {
             Color("Neutral-Medium")
             HStack(spacing: 0) {
                 TextFieldDecimal(value: $viewModel.value, text: "Betrag", onSubmitAction: {})
+                    .focused($isTotalFieldFocused)
             }
             .foregroundColor(Color("Main"))
             .font(.system(size: 20, weight: .light))
             .padding(.horizontal, 12)
+        }
+        .onAppear{
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
+                isTotalFieldFocused = viewModel.shouldBeFocused
+            }
         }
         .frame(height: 70)
         .cornerRadius(70/4)
