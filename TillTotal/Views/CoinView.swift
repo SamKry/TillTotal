@@ -137,6 +137,18 @@ struct CoinView: View {
         }
         
         .frame(height: 70)
+        .contextMenu {
+            Button {
+                viewModel.number = 0
+            } label: {
+                Label("Reset", systemImage: "gobackward")
+            }
+            Button {
+                viewModel.number = viewModel.number + 10
+            } label: {
+                Label("Add 10", systemImage: "plus.circle")
+            }
+        }
         .cornerRadius(70/4)
         
         
