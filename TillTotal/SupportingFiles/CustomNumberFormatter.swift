@@ -20,7 +20,7 @@ class CustomNumberFormatter: NumberFormatter {
     static let decimalFormatter: NumberFormatter = {
         let formatter = CustomNumberFormatter()
         formatter.numberStyle = .decimal
-        formatter.usesGroupingSeparator = false // Remove commas
+        formatter.usesGroupingSeparator = false // Remove ticks for large number formatting
         formatter.minimumFractionDigits = 2
         return formatter
     }()
@@ -28,7 +28,7 @@ class CustomNumberFormatter: NumberFormatter {
     static let intFormatter: NumberFormatter = {
         let formatter = CustomNumberFormatter()
         formatter.numberStyle = .decimal
-        formatter.usesGroupingSeparator = false // Remove commas
+        formatter.usesGroupingSeparator = false // Remove ticks for large number formatting
         formatter.maximumFractionDigits = 0
         return formatter
     }()

@@ -10,6 +10,7 @@ import SwiftUI
 struct CoinView: View {
     @State var currentDragOffsetX: CGFloat = 0  // must stay 0!
     private let dragThreashold:CGFloat = 70
+    @FocusState var isTotalFieldFocused:Bool
     
     @ObservedObject var viewModel:CoinViewModel
     
@@ -31,12 +32,6 @@ struct CoinView: View {
             .onAppear{
                 viewModel.reloadModel()
                 viewModel.calcTotal()
-            }
-            .onChange(of: viewModel.number) { _ in
-                viewModel.calcTotal()
-            }
-            .onChange(of: viewModel.total) { _ in
-                viewModel.calcNumber()
             }
             .modifier(DragGestureViewModifier(
                 onUpdate: { value in
@@ -74,13 +69,31 @@ struct CoinView: View {
         ZStack {
             Color("Neutral-Medium")
             HStack(spacing: 0) {
-                TextFieldDecimal(value: $viewModel.value, text: "Betrag")
+                TextFieldDecimal(value: $viewModel.value, text: "Betrag", onSubmitAction: {})
+                    .focused($isTotalFieldFocused)
             }
             .foregroundColor(Color("Main"))
             .font(.system(size: 20, weight: .light))
             .padding(.horizontal, 12)
         }
+        .onAppear{
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
+                isTotalFieldFocused = viewModel.shouldBeFocused
+            }
+        }
         .frame(height: 70)
+        .contextMenu {
+            Button {
+                viewModel.value = 0.0
+            } label: {
+                Label("Reset", systemImage: "gobackward")
+            }
+            Button {
+                viewModel.didSubstract!()
+            } label: {
+                Label("Delete", systemImage: "delete.left.fill")
+            }
+        }
         .cornerRadius(70/4)
     }
     
@@ -89,28 +102,34 @@ struct CoinView: View {
             Color("Neutral-Medium")
             HStack(spacing: 0) {
                 
-                if (viewModel.value.truncatingRemainder(dividingBy: 1) == 0) {
-                    Text(String(Int(viewModel.value)))
-                        .lineLimit(1)
-                } else {
-                    Text(String(viewModel.value))
-                        .lineLimit(1)
+                HStack{
+                    if (viewModel.value.truncatingRemainder(dividingBy: 1) == 0) {
+                        Text(String(Int(viewModel.value)))
+                            .lineLimit(1)
+                    } else {
+                        Text(String(viewModel.value))
+                            .lineLimit(1)
+                    }
+                    
+                    Spacer()
+                    
+                    Text("x")
                 }
                 
-                Spacer()
-                
-                Text("x")
-                
-                TextFieldInt(value: $viewModel.number, text: "Anzahl")
-                    .frame(width: 100)
+                TextFieldInt(value: $viewModel.number, text: "Anzahl", onSubmitAction: viewModel.calcTotal)
+                    .frame(minWidth: 100)
                     .padding(.leading, 7)
                 
                 Text("=")
                     .padding(.horizontal, 7)
-                TextFieldDecimal(value: $viewModel.total, text: "Total")
-                    .frame(width: 100)
+                TextFieldDecimal(value: $viewModel.total, text: "Total", onSubmitAction: viewModel.calcNumber) // onSubmitAction Still needed for Mac App
+                    .frame(minWidth: 100)
                     .foregroundColor(Color("Idle"))
+                    .focused($isTotalFieldFocused)
             }
+            .onChange(of: isTotalFieldFocused, perform: { _ in
+                viewModel.calcNumber()
+            })
             .foregroundColor(Color("Main"))
             .font(.system(size: 20, weight: .light))
             .padding(.horizontal, 12)
@@ -118,6 +137,18 @@ struct CoinView: View {
         }
         
         .frame(height: 70)
+        .contextMenu {
+            Button {
+                viewModel.number = 0
+            } label: {
+                Label("Reset", systemImage: "gobackward")
+            }
+            Button {
+                viewModel.number = viewModel.number + 10
+            } label: {
+                Label("Add 10", systemImage: "plus.circle")
+            }
+        }
         .cornerRadius(70/4)
         
         

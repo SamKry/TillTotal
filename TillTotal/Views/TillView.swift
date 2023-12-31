@@ -63,8 +63,8 @@ struct TillView: View {
                         GridRow {
                             Text("Gesamt")
                             Text("\(String(format: "%.2f", vm.getTotal()))")
-                            TextFieldDecimal(value: $vm.refrenceTotal, text: "Total soll")
-                                .keyboardType(.decimalPad)
+                            
+                            TextFieldDecimal(value: $vm.refrenceTotal, text: "Total soll", onSubmitAction: {})
                                 .foregroundColor(Color("Main"))
                                 .padding(5)
                                 .frame(height: 35)
@@ -95,12 +95,53 @@ struct TillView: View {
             )
             .cornerRadius(30)
             
-            SettinsView(vm: vm, contentVM: contentVM)
+            VStack {
+                VStack {
+                    HStack {
+                        Text("Einstellungen")
+                            .font(.largeTitle)
+                            .foregroundColor(Color("Main"))
+                        Spacer()
+                    }
+                    
+                    VStack {
+                        HStack {
+                            Text("Kassenstock:")
+                                .padding(.vertical)
+                            
+                            Spacer()
+                            
+                            TextFieldDecimal(value: $vm.cashStock, text: "Kassenstock", onSubmitAction: {} )
+                        }
+                        .foregroundColor(Color("Main"))
+                        .font(.system(size: 20, weight: .light))
+                        .padding(.horizontal, 10)
+                        
+                        ResetButton {
+                            vm.reset()
+                            contentVM.reset()
+                        }
+                        Toggle(isOn: $vm.isAutoLockDisabled) {
+                            Text("Autom. Bildschirmsperre verhindern")
+                        }
+                        .padding(.horizontal, 10)
+                        .padding(.vertical)
+                    }
+                    .background(Color("Neutral-Medium"))
+                    .cornerRadius(70/4)
+                }
+                .padding()
+                .background(
+                    Color("Neutral-Ultra")
+                )
+                .cornerRadius(30)
+            }
+            
             
             Spacer()
         }
         .onAppear{
-            vm.updateVariables()
+            vm.refetchAndUpdateVariables()
         }
         .onTapGesture {
             KeyboardHandler.hideKeyboard()

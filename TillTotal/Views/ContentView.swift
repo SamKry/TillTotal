@@ -12,6 +12,7 @@ struct ContentView: View {
     @ObservedObject var vm:ContentViewModel
     
     @State var coinTypeVMs:[CoinTypeViewModel]
+    @State private var selection = "Münzen" // change for testing
     
     
     init(vm:ContentViewModel) {
@@ -21,15 +22,17 @@ struct ContentView: View {
     }
     
     var body: some View {
-        TabView {
-            ForEach(coinTypeVMs) { coinTypeVM in 
+        TabView(selection: $selection) {
+            ForEach(coinTypeVMs) { coinTypeVM in
                 CoinTypeView(vm: coinTypeVM)
                     .onTapGesture {
                         KeyboardHandler.hideKeyboard()
+                        coinTypeVM.revalidateAll()
                     }.tabItem {
                         coinTypeVM.icon
                         Text(coinTypeVM.name)
                     }
+                    .tag(coinTypeVM.name)
             }
             
             TillView(vm: TillViewModel(tillEntity: vm.till), contentVM: vm)
@@ -37,7 +40,9 @@ struct ContentView: View {
                     Image(systemName: "chart.line.uptrend.xyaxis")
                     Text("Abrechnung")
                 }
+                .tag("Abrechnung")
         }
+        .scrollDismissesKeyboard(ScrollDismissesKeyboardMode.interactively)
         .accentColor(Color("Main"))
     }
 }

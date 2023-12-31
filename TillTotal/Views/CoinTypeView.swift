@@ -15,37 +15,48 @@ struct CoinTypeView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            HStack{
-                Text(vm.name)
-                Spacer()
-            }
-            .font(.largeTitle)
-            .foregroundColor(Color("Main"))
-            .padding(.horizontal)
-            
-            ScrollView(showsIndicators: false){
-                Spacer(minLength: 20)
-                ForEach(vm.coins) { coin in
-                    let cVM = CoinViewModel(coinEntity: coin, isOther: vm.isOther, didDelete: vm.reloadModel)
-                    CoinView(viewModel: cVM)
-                        .padding(.horizontal)
+        ZStack{
+            VStack(spacing: 0) {
+                HStack{
+                    Text(vm.name)
+                    Spacer()
                 }
-                Spacer()
-            }
-            
-            if (vm.isOther) {
-                Button {
-                    withAnimation {
-                        vm.addOther()
+                .font(.largeTitle)
+                .foregroundColor(Color("Main"))
+                .padding(.horizontal)
+                
+                ScrollView(showsIndicators: false){
+                    Spacer(minLength: 20)
+                    ForEach(vm.coinVMs) { coinvm in
+                        CoinView(viewModel: coinvm)
+                            .padding(.horizontal)
                     }
-                } label: {
-                    Image(systemName: "plus.circle")
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundColor(.green)
-                        .frame(width: 40, height: 40)
-                        .padding(.bottom, 10)
+                    Spacer()
+                }
+            }
+            if (vm.isOther) {
+                VStack{
+                    Spacer()
+                    Button {
+                        withAnimation {
+                            vm.addOther()
+                        }
+                    } label: {
+                        ZStack{
+                            Circle()
+                                .fill(Color(.neutralMedium))
+                                .frame(width: 60, height: 60)
+                                .shadow(color: Color(.neutral).opacity(0.25), radius: 3, x: 5, y: 5)
+                            
+                            Image(systemName: "plus.circle")
+                                .resizable()
+                                .scaledToFit()
+                                .foregroundColor(Color(.main))
+                                .frame(width: 40, height: 40)
+                        }
+                    }
+                    .offset(x: ((UIScreen.main.bounds.width - 60) / 2)-15)
+                    .padding(.bottom, 15)
                 }
             }
         }
@@ -54,8 +65,20 @@ struct CoinTypeView: View {
         }
         .padding(.top)
         .background(
-            Color("Neutral-Ultra")
+            RoundedCornersShape(corners: [.topLeft, .topRight], radius: 30)
+            .fill(Color("Neutral-Ultra"))
         )
-        .cornerRadius(30)
+    }
+}
+
+struct RoundedCornersShape: Shape {
+    let corners: UIRectCorner
+    let radius: CGFloat
+    
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect,
+                                byRoundingCorners: corners,
+                                cornerRadii: CGSize(width: radius, height: radius))
+        return Path(path.cgPath)
     }
 }
