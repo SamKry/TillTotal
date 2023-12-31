@@ -35,6 +35,17 @@ class TillViewModel:ObservableObject {
     @Published var cashNetto:Double = 0.0
     @Published var diff:Double = 0.0
     
+    @Published var isAutoLockDisabled:Bool{
+        didSet{
+            if isAutoLockDisabled{
+                ScreenSaver.shared.disableAutoLock()
+            }
+            else{
+                ScreenSaver.shared.enableAutoLock()
+            }
+        }
+    }
+    
     init(tillEntity:TillEntity) {
         self.tillEntity = tillEntity
         self.currencyEntity = tillEntity.currency!
@@ -42,8 +53,9 @@ class TillViewModel:ObservableObject {
         self.refrenceTotal = tillEntity.refrenceTotal
         self.name = tillEntity.name!
         self.id = tillEntity.id!
+        self.isAutoLockDisabled = !ScreenSaver.shared.isAutoLockEnabled()
         refetchAndUpdateVariables()
-    }    
+    }
     
     func refetchAndUpdateVariables() {
         updateCoins()

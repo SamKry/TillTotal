@@ -121,7 +121,11 @@ struct TillView: View {
                             vm.reset()
                             contentVM.reset()
                         }
-                        .padding(.bottom)
+                        Toggle(isOn: $vm.isAutoLockDisabled) {
+                            Text("Autom. Bildschirmsperre verhindern")
+                        }
+                        .padding(.horizontal, 10)
+                        .padding(.vertical)
                     }
                     .background(Color("Neutral-Medium"))
                     .cornerRadius(70/4)
