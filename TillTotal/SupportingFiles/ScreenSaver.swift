@@ -18,21 +18,16 @@ class ScreenSaver: ObservableObject {
         }
         else{
             disableAutoLock()
-        }
-        print("init Screen Saver")
-        print(UIApplication.shared.isIdleTimerDisabled)
-    }
+        }    }
     
     func enableAutoLock() {
         autoLock = true
         UIApplication.shared.isIdleTimerDisabled = false
-        print("enable Auto Lock")
     }
     
     func disableAutoLock() {
         autoLock = false
         UIApplication.shared.isIdleTimerDisabled = true
-        print("disable auto Lock")
     }
     
     func toggleAutoLock() {
