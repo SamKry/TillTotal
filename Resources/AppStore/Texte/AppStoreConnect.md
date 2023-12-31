@@ -3,7 +3,7 @@
 ## Versionsinformationen
 Die Produktseite für diese App-Version wird im App Store mit den unten aufgeführten Inhalten und Metadaten veröffentlicht.
 
-### Werbetexte (170 zeichen)
+### Werbetexte (170 Zeichen)
 
 > Mithilfe von Werbetexten können Sie Ihre App Store-Besucher über aktuelle App-Features informieren. Dazu ist keine aktualisierte Übermittlung erforderlich. Der Werbetext wird für Kunden mit Geräten mit iOS 11 (oder neuer) und macOS 10.13 (oder neuer) im App Store oberhalb Ihrer Beschreibung erscheinen.
 
@@ -31,9 +31,9 @@ With TillTotal, you can conveniently enter the amount of individual coins or inp
 Usage:
 1. Launch TillTotal on your iOS device.
 2. Enter the quantity of each coin denomination or input the total amount of coins.
-3. Additionally, enter other amounts such as from kedit cards, etc.
+3. Additionally, enter other amounts such as from credit cards, etc.
 4. TillTotal will calculate the total amount and provide a comprehensive overview of your daily earnings.
-5. Enter the chash stock and the refrence total.
+5. Enter the cash stock and the reference total.
 
 Done! It's that easy
 
@@ -44,7 +44,7 @@ Mit TillTotal können Sie bequem den Betrag der einzelnen Münzen oder den Gesam
 Verwendung:
 1. Starten Sie TillTotal auf Ihrem iOS-Gerät.
 2. Geben Sie die Anzahl der einzelnen Münzwerte oder die Gesamtzahl der Münzen ein.
-3. Geben Sie zusätzlich andere Beträge ein, z. B. von Kedit-Karten usw.
+3. Geben Sie zusätzlich andere Beträge ein, z. B. von Kredit-Karten usw.
 4. TillTotal berechnet den Gesamtbetrag und bietet einen umfassenden Überblick über Ihre täglichen Einnahmen.
 5. Geben Sie den Kassenbestand und die Referenzsumme ein.
 
@@ -57,7 +57,7 @@ TillTotal permet d'entrer facilement le montant de chaque pièce ou le montant t
 Utilisation :
 1. lancez TillTotal sur votre appareil iOS.
 2. saisissez le nombre de valeurs individuelles des pièces ou le nombre total de pièces.
-3. saisissez également d'autres montants, par exemple ceux des cartes Kedit, etc.
+3. saisissez également d'autres montants, par exemple ceux des cartes credit, etc.
 4. TillTotal calcule le montant total et offre un aperçu complet de vos recettes quotidiennes.
 5. saisissez le solde de caisse et le montant de référence.
 
@@ -68,13 +68,37 @@ Et voilà ! C'est aussi simple que ça
 > Beschreiben Sie die Neuheiten in dieser Version Ihrer App, beispielsweise neue Features, Verbesserungen und Fehlerbehebungen.
 
 **En:**
-Localised AppStore texts and minor bug fixes.
+Localised AppStore texts, new Features and minor bug fixes.
+
+Introducing: 
+- Separation of gross and net cash.
+- Context Menu on coins: Long press a coin to get access to the new quick actions.
+- Fixed iOS 17 decimal keyboard issues.
+- Swipe down to dismiss keyboard.
+- Set keyboard focus of "Andere" field on creation.
+- Enhance Add Button for "Andere".
 
 **De:**
-Lokalisierte AppStore-Texte und kleinere Fehlerkorrekturen.
+Lokalisierte AppStore-Texte, neue Funktionen und kleinere Fehlerbehebungen.
+
+Neu eingeführt: 
+- Trennung von Bar Brutto und Netto.
+- Kontextmenü auf Münzen: Drücke lange auf eine Münze, um Zugriff auf die neuen Schnellaktionen zu erhalten.
+- Probleme mit der Dezimaltastatur unter iOS 17 behoben.
+- Wischen Sie nach unten, um die Tastatur zu schließen.
+- Setzen des Tastaturfokus des Feldes "Andere" bei der Erstellung.
+- Verbesserter Hinzufügen-Button für "Andere".
 
 **Fr:**
-Textes AppStore localisés et corrections de bugs mineurs.
+Textes localisés de l'App Store, nouvelles fonctionnalités et corrections de bugs mineurs.
+
+Nouvellement introduit :
+- Séparation du brut et du net en espèces.
+- Menu contextuel sur les pièces de monnaie : appuyez longuement sur une pièce pour accéder aux nouvelles actions rapides.
+- Résolution des problèmes liés au clavier décimal sous iOS 17.
+- Faites glisser vers le bas pour fermer le clavier.
+- Définir le focus du clavier sur le champ "Andere" lors de la création.
+- Bouton d'ajout amélioré pour "Andere".
 
 ### Schlüsselwörter (99 Zeichen)
 
