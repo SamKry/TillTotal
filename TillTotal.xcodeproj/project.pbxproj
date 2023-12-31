@@ -40,7 +40,6 @@
 		44DE0AAA2A86BD0300FDAFC4 /* HapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DE0AA92A86BD0300FDAFC4 /* HapticFeedback.swift */; };
 		44DE0AAC2A86CF1600FDAFC4 /* KeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DE0AAB2A86CF1600FDAFC4 /* KeyboardHandler.swift */; };
 		44DE0AAE2A86D4B600FDAFC4 /* TextFieldFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44DE0AAD2A86D4B600FDAFC4 /* TextFieldFactory.swift */; };
-		44F860E92AF16238000282EE /* swipeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F860E82AF16238000282EE /* swipeButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,7 +89,6 @@
 		44DE0AAB2A86CF1600FDAFC4 /* KeyboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHandler.swift; sourceTree = "<group>"; };
 		44DE0AAD2A86D4B600FDAFC4 /* TextFieldFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldFactory.swift; sourceTree = "<group>"; };
 		44E6EE512AE16B3600156A9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		44F860E82AF16238000282EE /* swipeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swipeButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,7 +233,6 @@
 				44DE0AAB2A86CF1600FDAFC4 /* KeyboardHandler.swift */,
 				44DE0AAD2A86D4B600FDAFC4 /* TextFieldFactory.swift */,
 				44244C6A2A90E1FC00A74A57 /* ResetButton.swift */,
-				44F860E82AF16238000282EE /* swipeButton.swift */,
 				440B91A42A62CA53005DC20F /* Assets.xcassets */,
 			);
 			path = SupportingFiles;
@@ -364,7 +361,6 @@
 				442F30C42A6BE5AF0089C975 /* Model.xcdatamodeld in Sources */,
 				44244C6B2A90E1FC00A74A57 /* ResetButton.swift in Sources */,
 				44D782482A877E9B00F0FB8F /* CoinTypeView.swift in Sources */,
-				44F860E92AF16238000282EE /* swipeButton.swift in Sources */,
 				44682A002A7023B100C06304 /* CoinTypeEntityReopsitory.swift in Sources */,
 				44682A162A7BF49D00C06304 /* ContentView.swift in Sources */,
 				44682A1C2A7BF50000C06304 /* CoinViewModel.swift in Sources */,
@@ -539,7 +535,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.samkry.TillTotal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -571,7 +567,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.samkry.TillTotal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

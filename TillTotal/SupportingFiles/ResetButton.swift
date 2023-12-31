@@ -38,96 +38,82 @@ struct ResetButton: View {
                     .shadow(color: Color("Neutral").opacity(0.5), radius: 3, x: -5, y: 5)
                 Image(systemName: "chevron.right")
             }
-            .modifier(DragGestureViewModifier(
-                onUpdate: { value in
-                    KeyboardHandler.hideKeyboard()
-                    withAnimation(.easeInOut(duration: 0.4)){
-//                    withAnimation{
-                        let dOffsetW = value.translation.width
-                        print("offset: \(dOffsetW) - rest: \(restOffset) - Button Width: \(buttonWidth)")
-//                        withAnimation {
-                            if(dOffsetW > buttonWidth*0.75){
-                                withAnimation {
-                                    buttonColor = Color("Error")
-                                }
-                            }
-                            else{
-                                buttonColor = Color("Neutral-Ultra")
-                            }
-                            if(dOffsetW < restOffset)
+            .offset(x:currentDragOffsetX)
+            .gesture(
+                DragGesture()
+                    .onChanged({ value in
+                        let value_ = value.translation.width+restOffset
+                        withAnimation {
+                            if(value_ < restOffset)
                             {
-                                print("rest")
                                 currentDragOffsetX = restOffset
                             }
-                            else if(dOffsetW > restOffset+buttonWidth-buttonHeigth){
+                            else if(value_ > restOffset+buttonWidth-buttonHeigth){
                                 currentDragOffsetX = restOffset+buttonWidth-buttonHeigth
                             }
-                        else{
-                            currentDragOffsetX = dOffsetW
+                            else{
+                                currentDragOffsetX = value_
+                            }
                         }
-//                        }
-                    }
-                },
-                onEnd: {
-                    dragged()
-                },
-                onCancel: {
-                    dragged()
-                }
-            ))
-            .offset(x:currentDragOffsetX)
-//            .gesture(
-//                DragGesture()
-//                    .onChanged({ value in
-//                        let value_ = value.translation.width+restOffset
-//                        withAnimation {
-//                            if(value_ < restOffset)
-//                            {
-//                                currentDragOffsetX = restOffset
-//                            }
-//                            else if(value_ > restOffset+buttonWidth-buttonHeigth){
-//                                currentDragOffsetX = restOffset+buttonWidth-buttonHeigth
-//                            }
-//                            else{
-//                                currentDragOffsetX = value_
-//                            }
-//                        }
-//                        if(value.translation.width > buttonWidth*0.75){
-//                            withAnimation {
-//                                buttonColor = Color("Error")
-//                            }
-//                        }
-//                        else{
-//                            buttonColor = Color("Neutral-Ultra")
-//                        }
-//                    })
-//                    .onEnded({ value in
-//                        withAnimation {
-//                            currentDragOffsetX = restOffset
-//                            if(value.translation.width > buttonWidth*0.75){
-//                                onEnd()
+                        if(value.translation.width > buttonWidth*0.75){
+                            withAnimation {
+                                buttonColor = Color("Error")
+                            }
+                        }
+                        else{
+                            buttonColor = Color("Neutral-Ultra")
+                        }
+                    })
+                    .onEnded({ value in
+                        withAnimation {
+                            currentDragOffsetX = restOffset
+                            if(value.translation.width > buttonWidth*0.75){
+                                onEnd()
+                                HapticFeedback.ok()
+                            }
+                        }
+                        buttonColor = Color("Neutral-Ultra")
+                    })
+            )
+            
+//            .modifier(DragGestureViewModifier(
+//                onUpdate: { value in
+//                    KeyboardHandler.hideKeyboard()
+//                    withAnimation(.easeInOut(duration: 0.4)){
+//                        currentDragOffsetX = value.translation.width
+//                    }
+//                },
+//                onEnd: {
+//                    withAnimation(.easeInOut(duration: 0.2)){
+//                        if currentDragOffsetX < -dragThreashold{
+//                            viewModel.number+=1
+//                            HapticFeedback.ok()
+//                        }else if currentDragOffsetX > dragThreashold{
+//                            if viewModel.number > 0{
+//                                viewModel.number-=1
 //                                HapticFeedback.ok()
 //                            }
 //                        }
-//                        buttonColor = Color("Neutral-Ultra")
-//                    })
-//            )
-            
+//                        currentDragOffsetX = 0
+//                    }
+//                },
+//                onCancel: {
+//                    withAnimation(.easeInOut(duration: 0.2)){
+//                        if currentDragOffsetX < -dragThreashold{
+//                            viewModel.number+=1
+//                        }else if currentDragOffsetX > dragThreashold{
+//                            if viewModel.number > 0{
+//                                viewModel.number-=1
+//                            }
+//                        }
+//                        currentDragOffsetX = 0
+//                    }
+//                }
+//            ))
+//            .offset(x: currentDragOffsetX)
             
         }
         .frame(width: buttonWidth, height: buttonHeigth)
-    }
-    
-    fileprivate func dragged() {
-        print("dragged")
-        withAnimation(.easeInOut(duration: 0.2)){
-            if(currentDragOffsetX > buttonWidth*0.75){
-                onEnd()
-                HapticFeedback.ok()
-            }
-            currentDragOffsetX = restOffset
-        }
-        buttonColor = Color("Neutral-Ultra")
     }
 }
 
