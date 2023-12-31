@@ -19,7 +19,6 @@ struct ContentView: View {
         self.vm = vm
         UITabBar.appearance().unselectedItemTintColor = UIColor(Color("Neutral-Medium"))
         self.coinTypeVMs = vm.coinTypeVMs
-        ScreenSaver.disableAutoLock()
     }
     
     var body: some View {
